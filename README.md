@@ -89,6 +89,7 @@ Based on separation along principal component #1 for cohort HBCC, these 8 sample
 7: HBCC_2756 0.3283
 8: HBCC_2781 0.2680
 ```
+
 To remove these files, generated [`data/HBCC-remove.txt`](data/HBCC-remove.txt) then excluded samples with `plink`:
 
 ```bash
@@ -121,7 +122,6 @@ Rscript scripts/prep-QTL-bedfiles.R
 See [`intersect-files.R`](scripts/intersect-files.R) which is executed by [`intersect-files.sh`](scripts/intersect-files.sh)
 ```bash
 # Subset everything except plink files
-```bash
 Rscript scripts/intersect-files.sh
 ```
 
