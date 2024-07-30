@@ -120,6 +120,7 @@ Rscript scripts/prep-QTL-bedfiles.R
 
 ## Generate final files with appropriate intersections of samples
 See [`intersect-files.R`](scripts/intersect-files.R) which is executed by [`intersect-files.sh`](scripts/intersect-files.sh)
+
 ```bash
 # Subset everything except plink files
 Rscript scripts/intersect-files.sh
