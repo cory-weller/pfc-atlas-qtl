@@ -3,3 +3,5 @@ tensorqtl-subsets/*
 data/*
 output/*
 plots/*
+*.zip
+slurm*.out
