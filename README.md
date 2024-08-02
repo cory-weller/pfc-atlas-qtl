@@ -1,15 +1,17 @@
 # pfc-atlas-qtl
 
-## Get crosscheck-fingerprinting
+# Fingerprinting
+
 See [GATK documentation](https://gatk.broadinstitute.org/hc/en-us/articles/360037594711-CrosscheckFingerprints-Picard)
 ```bash
-wget -P fingerprints/ https://gist.githubusercontent.com/cory-weller/725117ae7c01fe245f391cd631ffd3cb/raw/19b88aa544c027459d462d31c30beb76a0c5c2ce/Homo_sapiens_assembly38.haplotype_database.txt
+N_NABEC=$(wc -l NABEC_bam_file_paths.txt | awk '{print $1}')
+sbatch --array=1-${N_NABEC}%20 scripts/get-fingerprints.sh NABEC
 
-# Extract BAM and VCF of one individual
-# map from 
-wget https://github.com/naumanjaved/fingerprint_maps/raw/master/map_files/hg38_chr.map`
-ml plink/1.9
+N_HBCC=$(wc -l HBCC_bam_file_paths.txt | awk '{print $1}')
+sbatch --array=1-${N_HBCC}%20 scripts/get-fingerprints.sh HBCC
 ```
+
+# QTL Mapping
 
 ##  Prepare NABEC genotypes
 ```bash

@@ -77,18 +77,23 @@ fi
 
 
 
-SAMPLEFILE=samples.txt
+SAMPLEFILE=${STARTDIR}/${COHORT}.samples.txt
 TMPDIR=/lscratch/${SLURM_JOB_ID}
 HAPMAP="${STARTDIR}/hg38_chr.reorder.map"
+paste <(sed 's@/.*Multiome/@@g' ${bamlist}  | sed 's@/.*.bam$@@g') ${bamlist} > ${SAMPLEFILE}
 
 mkdir -p ${TMPDIR} && cd ${TMPDIR}
 
-paste <(sed 's@/.*Multiome/@@g' ${bamlist}  | sed 's@/.*.bam$@@g') ${bamlist} > samples.txt
 
 N=${SLURM_ARRAY_TASK_ID}
 
 sample=$(sed -n ${N}p ${SAMPLEFILE} | cut -f 1)
 sample=${sample/-ARC/}
+
+if [[ "${COHORT}" == 'HBCC' ]]; then
+    sample=HBCC_${sample}
+fi
+
 bam=$(sed -n ${N}p ${SAMPLEFILE} | cut -f 2)
 bfile="/data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/data/genotypes/${COHORT}-forQTL"
 
@@ -130,7 +135,7 @@ module load R/4.3   # Requires data.table
 Rscript ${STARTDIR}/scripts/reorder-vcf.R ${sample} # generates ${sample}.genotype-fingerprints-noheader.vcf
 
 # Give the newly generated vcf header to the genotype vcf
-grep '^#' "${sample}.10Xrna.vcf" | cat - ${sample}.genotype-fingerprints-noheader.vcf > "${sample}.genotype-fingerprints.vcf"
+grep '^##' "${sample}.10Xrna.vcf" | cat - ${sample}.genotype-fingerprints-noheader.vcf > "${sample}.genotype-fingerprints.vcf"
 
 # Check fingerprints
 gatk CheckFingerprint  \
@@ -141,4 +146,4 @@ gatk CheckFingerprint  \
 
 zip ${sample}-fingerprinting.zip ${sample}.10Xrna.vcf ${sample}.genotype-fingerprints.vcf ${sample}.fingerprinting*
 
-cp ${sample}-fingerprinting.zip ${STARTDIR}/fingerprints
+cp ${sample}-fingerprinting.zip ${STARTDIR}/fingerprints/${COHORT}
