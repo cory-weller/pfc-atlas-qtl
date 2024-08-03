@@ -96,6 +96,11 @@ sample=${sample/-ARC/}
 bam=$(sed -n ${N}p ${SAMPLEFILE} | cut -f 2)
 bfile="/data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/data/genotypes/${COHORT}-forQTL"
 
+
+# Create bam with new read group
+module load samtools
+samtools addreplacerg -r "SM:${sample}" -o ${sample}.bam ${bam}
+
 cp ~/pfc-atlas-qtl/hg38_chr.reorder.map .
 
 module load plink/1.9

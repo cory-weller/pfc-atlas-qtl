@@ -9,6 +9,10 @@
     vcf.fingerprints <- fread(paste0(sample, '.10Xrna.vcf'), skip='#CHROM')
     setnames(vcf.genotypes, '#CHROM', 'CHROM')
     setnames(vcf.fingerprints, '#CHROM', 'CHROM')
+    vcf_cols <- c('CHROM','POS','ID','REF','ALT','QUAL','FILTER','INFO','FORMAT')
+    setnames(vcf.fingerprints, c(vcf_cols, 'GT.fingerprint'))
+    setnames(vcf.genotypes, c(vcf_cols, 'GT.genotype'))
+
     setkey(vcf.genotypes, 'CHROM','POS')
     setkey(vcf.fingerprints, 'CHROM','POS')
 
@@ -18,7 +22,7 @@
     setnames(dat.merge, 'ALT.y','ALT')
 
     # Fix loci where ref/alt allele has been swapped
-    dat.merge[,GT_pre := get(sample)]
+    dat.merge[,GT_pre := GT.genotype]
     dat.merge[REF != REF.x & GT_pre == '0/0', GT_post := '1/1']
     dat.merge[REF != REF.x & GT_pre == '1/1', GT_post := '0/0']
     dat.merge[is.na(GT_post), GT_post := GT_pre]

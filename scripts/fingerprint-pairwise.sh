@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-#SBATCH --time 2:30:00
+#SBATCH --time 8:00:00
 #SBATCH --mem 60g
 #SBATCH --gres lscratch:100
-#SBATCH --partition quick,norm
+#SBATCH --partition norm
 #SBATCH --ntasks 12
 #SBATCH --cpus-per-task 1
 
@@ -77,6 +77,8 @@ files=($(ls *10Xrna.vcf | cut -d '.' -f 1))
 
 parallel -j ${NTHREADS} crosscheck {1} {2} {3} ::: ${HAPMAP} ::: ${files[@]} ::: ${files[@]}
 
-zip NABEC-fingerprint-checks.zip *crosscheck*
+mkdir ${COHORT}
+mv *crosscheck* ${COHORT}
+zip -r NABEC-crosscheck-fingerprints.zip ${COHORT}
 
-mv NABEC-fingerprint-checks.zip ${FINGERPRINTDIR}
+mv NABEC-crosscheck-fingerprints.zip ${FINGERPRINTDIR}
