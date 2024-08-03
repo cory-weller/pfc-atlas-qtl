@@ -3,11 +3,90 @@
 # Fingerprinting
 
 See [GATK documentation](https://gatk.broadinstitute.org/hc/en-us/articles/360037594711-CrosscheckFingerprints-Picard)
+
+Prepare hg38 reference, dict, and haplotype map
 ```bash
-N_NABEC=$(wc -l NABEC_bam_file_paths.txt | awk '{print $1}')
+# Retrieve and reorder haplotype map
+
+# Finalize samples to use
+bash scripts/finalize-samples.sh HBCC
+bash scripts/finalize-samples.sh NABEC
+
+if [[ ! -f 'hg38_chr.map' ]]; then
+    wget -P https://github.com/naumanjaved/fingerprint_maps/raw/master/map_files/hg38_chr.map
+fi
+
+# Build new map
+function reorderMap() {
+    local fn=${1}
+    local out_fn=${fn/map/reorder.map}
+    echo "$fn being reordered to $out_fn"
+    grep '^@SQ' hg38_chr.map  > header.txt
+    grep 'chr1\s' header.txt > ${out_fn}
+    grep 'chr10\s' header.txt >> ${out_fn}
+    grep 'chr11\s' header.txt >> ${out_fn}
+    grep 'chr12\s' header.txt >> ${out_fn}
+    grep 'chr13\s' header.txt >> ${out_fn}
+    grep 'chr14\s' header.txt >> ${out_fn}
+    grep 'chr15\s' header.txt >> ${out_fn}
+    grep 'chr16\s' header.txt >> ${out_fn}
+    grep 'chr17\s' header.txt >> ${out_fn}
+    grep 'chr18\s' header.txt >> ${out_fn}
+    grep 'chr19\s' header.txt >> ${out_fn}
+    grep 'chr2\s' header.txt >> ${out_fn}
+    grep 'chr20\s' header.txt >> ${out_fn}
+    grep 'chr21\s' header.txt >> ${out_fn}
+    grep 'chr22\s' header.txt >> ${out_fn}
+    grep 'chr3\s' header.txt >> ${out_fn}
+    grep 'chr4\s' header.txt >> ${out_fn}
+    grep 'chr5\s' header.txt >> ${out_fn}
+    grep 'chr6\s' header.txt >> ${out_fn}
+    grep 'chr7\s' header.txt >> ${out_fn}
+    grep 'chr8\s' header.txt >> ${out_fn}
+    grep 'chr9\s' header.txt >> ${out_fn}
+    grep '#' hg38_chr.map >> ${out_fn}
+    grep '^chr1\s' hg38_chr.map >> ${out_fn}
+    grep '^chr10\s' hg38_chr.map >> ${out_fn}
+    grep '^chr11\s' hg38_chr.map >> ${out_fn}
+    grep '^chr12\s' hg38_chr.map >> ${out_fn}
+    grep '^chr13\s' hg38_chr.map >> ${out_fn}
+    grep '^chr14\s' hg38_chr.map >> ${out_fn}
+    grep '^chr15\s' hg38_chr.map >> ${out_fn}
+    grep '^chr16\s' hg38_chr.map >> ${out_fn}
+    grep '^chr17\s' hg38_chr.map >> ${out_fn}
+    grep '^chr18\s' hg38_chr.map >> ${out_fn}
+    grep '^chr19\s' hg38_chr.map >> ${out_fn}
+    grep '^chr2\s' hg38_chr.map >> ${out_fn}
+    grep '^chr20\s' hg38_chr.map >> ${out_fn}
+    grep '^chr21\s' hg38_chr.map >> ${out_fn}
+    grep '^chr22\s' hg38_chr.map >> ${out_fn}
+    grep '^chr3\s' hg38_chr.map >> ${out_fn}
+    grep '^chr4\s' hg38_chr.map >> ${out_fn}
+    grep '^chr5\s' hg38_chr.map >> ${out_fn}
+    grep '^chr6\s' hg38_chr.map >> ${out_fn}
+    grep '^chr7\s' hg38_chr.map >> ${out_fn}
+    grep '^chr8\s' hg38_chr.map >> ${out_fn}
+    grep '^chr9\s' hg38_chr.map >> ${out_fn}
+}
+
+if [[ ! -f 'fingerprints/hg38_chr.reorder.map' ]]; then
+    reorderMap hg38_chr.map
+fi
+
+REF='/fdb/cellranger-arc/refdata-cellranger-arc-GRCh38-2020-A/fasta/genome.fa'
+ln -s ${REF} .
+module load GATK
+gatk CreateSequenceDictionary \
+    R=hg38.fa 
+module load samtools
+samtools faidx hg38.fa
+```
+
+```bash
+N_NABEC=$(wc -l NABEC.samples.txt | awk '{print $1}')
 sbatch --array=1-${N_NABEC}%20 scripts/get-fingerprints.sh NABEC
 
-N_HBCC=$(wc -l HBCC_bam_file_paths.txt | awk '{print $1}')
+N_HBCC=$(wc -l HBCC.samples.txt | awk '{print $1}')
 sbatch --array=1-${N_HBCC}%20 scripts/get-fingerprints.sh HBCC
 ```
 
