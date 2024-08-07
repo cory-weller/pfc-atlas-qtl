@@ -5,14 +5,10 @@
 #SBATCH --partition quick,norm
 #SBATCH --cpus-per-task 2
 
-COHORT=${1}
-N=${2}
 STARTDIR='/data/CARD_singlecell/users/wellerca/pfc-atlas-qtl'
 
-bamlist="${STARTDIR}/${COHORT}_bam_file_paths.txt"
 
-
-SAMPLEFILE=${STARTDIR}/${COHORT}.samples.txt
+SAMPLEFILE=${STARTDIR}/samples.tsv
 
 TMPDIR=/lscratch/${SLURM_JOB_ID}
 HAPMAP="hg38_chr.reorder.map"
@@ -29,19 +25,23 @@ fi
 sample=$(sed -n ${N}p ${SAMPLEFILE} | cut -f 1)
 sample=${sample/-ARC/}
 
+COHORT=$(sed -n ${N}p ${SAMPLEFILE} | cut -f 11)
+
 if [[ "${COHORT}" == 'HBCC' ]]; then
     sample=HBCC_${sample}
 fi
 
-bam=$(sed -n ${N}p ${SAMPLEFILE} | cut -f 2)
+bam=$(sed -n ${N}p ${SAMPLEFILE} | cut -f 12)
 bfile="/data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/data/genotypes/${COHORT}-forQTL"
 
 # Create bam with sample ID forced to be $sample
 module load samtools
-samtools addreplacerg -r "SM:${sample}" -r "ID:${sample}" -o ${sample}.bam ${bam}
+if [[ "${COHORT}" == 'HBCC' ]]; then
+    samtools addreplacerg -r "SM:${sample}" -r "ID:${sample}" -o ${sample}.bam ${bam}
+else
+    ln -s ${bam} ${sample}.bam
+fi
 
-
-# cp ~/pfc-atlas-qtl/hg38_chr.reorder.map .
 
 module load plink/1.9
 
@@ -98,4 +98,4 @@ gatk CheckFingerprint  \
 
 zip ${sample}-fingerprinting.zip ${sample}.10Xrna.vcf ${sample}.genotype-fingerprints.vcf ${sample}.fingerprinting*
 
-cp ${sample}-fingerprinting.zip ${STARTDIR}/fingerprints/${COHORT}
+cp ${sample}-fingerprinting.zip ${STARTDIR}/fingerprints/

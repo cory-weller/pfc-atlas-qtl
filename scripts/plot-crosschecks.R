@@ -6,16 +6,32 @@ library(ggplot2)
 library(ggthemes)
 library(viridis)
 
-cohort <- commandArgs(trailingOnly=TRUE)[1]
+dat <- fread('crosscheck-results.txt')
 
-dat <- foreach(file=list.files(pattern='*crosscheck*'), .combine='rbind') %do% {
-    fread(file)
-}
+dat[RIGHT_SAMPLE %like% 'HBCC', 'cohort' := 'HBCC']
+dat[! RIGHT_SAMPLE %like% 'HBCC', 'cohort' := 'NABEC']
 
-dat[, 'ID_N' := tstrsplit(RIGHT_GROUP_VALUE, split='_')[2]]
-dat[, ID_N := as.numeric(ID_N)]
-setkey(dat, ID_N)
-samples <- unique(dat$RIGHT_GROUP_VALUE)
+NABEC <- dat[cohort == 'NABEC']
+HBCC <- dat[cohort == 'HBCC']
+
+NABEC[RIGHT_GROUP_VALUE %like% 'UMARY|KEN', c('BrainBank','ID_N') := tstrsplit(RIGHT_GROUP_VALUE, split='-')]
+NABEC[RIGHT_GROUP_VALUE %like% 'SH', c('BrainBank','ID_N1','ID_N2') := tstrsplit(RIGHT_GROUP_VALUE, split='-')]
+NABEC[RIGHT_GROUP_VALUE %like% 'SH', 'ID_N' := paste0(ID_N1, ID_N2)]
+NABEC[, ID_N := as.numeric(ID_N)]
+NABEC[, c('ID_N1','ID_N2') := NULL]
+setkey(NABEC, BrainBank, ID_N)
+NABEC.samples <- unique(NABEC$RIGHT_GROUP_VALUE)
+
+HBCC[, 'BrainBank' := 'HBCC']
+HBCC[, 'ID_N' := tstrsplit(RIGHT_GROUP_VALUE, split='_')[2]]
+HBCC[, ID_N := as.numeric(ID_N)]
+setkey(HBCC, ID_N)
+HBCC.samples <- unique(HBCC$RIGHT_GROUP_VALUE)
+
+samples <- c(NABEC.samples, HBCC.samples)
+
+dat <- rbindlist(list(NABEC, HBCC))
+
 dat[, ID_N := NULL]
 cols_to_remove <- c('_RUN_BARCODE','_LANE','_MOLECULAR_BARCODE_SEQUENCE','_LIBRARY')
 dat[, paste0('LEFT', cols_to_remove) := NULL]
@@ -34,5 +50,5 @@ g <- ggplot(dat, aes(x=LEFT_GROUP_VALUE, y=RIGHT_GROUP_VALUE, fill=LOD_SCORE)) +
     labs(x='Sample Genotype', y='Sample snRNA')
 
 
-ggsave(g, file=paste0('~/pfc-atlas-qtl/fingerprints/',cohort,'-crosscheck.png'), width=10+n_x/2, height=n_y/2, units='cm')
+ggsave(g, file=paste0('~/pfc-atlas-qtl/fingerprints/crosscheck.png'), width=10+n_x/3, height=n_y/3, units='cm', limitsize=FALSE)
 

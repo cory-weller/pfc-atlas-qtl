@@ -4,14 +4,14 @@
 
 See [GATK documentation](https://gatk.broadinstitute.org/hc/en-us/articles/360037594711-CrosscheckFingerprints-Picard)
 
+Generate table of samples along with batch and `bam` location
+```bash
+Rscript scripts/finalize-samples.R
+```
+
 Prepare hg38 reference, dict, and haplotype map
 ```bash
 # Retrieve and reorder haplotype map
-
-# Finalize samples to use
-bash scripts/finalize-samples.sh HBCC
-bash scripts/finalize-samples.sh NABEC
-
 if [[ ! -f 'hg38_chr.map' ]]; then
     wget -P https://github.com/naumanjaved/fingerprint_maps/raw/master/map_files/hg38_chr.map
 fi
@@ -81,6 +81,7 @@ gatk CreateSequenceDictionary \
 module load samtools
 samtools faidx hg38.fa
 ```
+
 
 ```bash
 N_NABEC=$(wc -l NABEC.samples.txt | awk '{print $1}')
