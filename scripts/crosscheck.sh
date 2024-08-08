@@ -10,7 +10,7 @@ STARTDIR='/data/CARD_singlecell/users/wellerca/pfc-atlas-qtl'
 
 
 TMPDIR=/lscratch/${SLURM_JOB_ID}
-TMPDIR=/dev/shm/${SLURM_JOB_ID}
+#TMPDIR=/dev/shm/${SLURM_JOB_ID}
 HAPMAP="hg38_chr.reorder.map"
 
 
