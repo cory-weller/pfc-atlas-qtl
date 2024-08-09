@@ -4,6 +4,55 @@
 
 See [GATK documentation](https://gatk.broadinstitute.org/hc/en-us/articles/360037594711-CrosscheckFingerprints-Picard)
 
+## 1. Get RNA fingerprints
+Generate a two-column file that contains `SAMPLEID` and `FULL_BAMFILE_PATH` (no header), in my case [`sample_bam.txt`](sample_bam.txt).
+
+Then submit job array with one job per RNA `bam`:
+```bash
+mkdir -p fingerprints/rna
+samplefile='sample_bam.txt'
+njobs=$(wc -l $samplefile)
+sbatch --array=1-${njobs}%50 scripts/get-rna-fingerprints.sh ${samplefile}
+sbatch --array=1-${njobs}%50 scripts/get-rna-fingerprints.sh ${samplefile}
+```
+
+## 2. Combine RNA fingerprints into one file
+Once all jobs complete and separate fingrprints files exist (one per sample), merge all into a single file `rna-merged.vcf.gz`
+```bash
+cd fingerprints/rna
+module load samtools
+ls *.vcf.gz > files.txt
+bcftools merge --file-list files.txt -o rna-merged.vcf
+bgzip rna-merged.vcf 
+tabix -p vcf rna-merged.vcf.gz
+```
+
+## 3. Get DNA fingerprints
+[`merge-nabec-hbcc-genotypes.sh`](scripts/merge-nabec-hbcc-genotypes.sh) generates fingerprints file `dna-merged.vcf.gz` 
+
+The script [`merge-nabec-hbcc-genotypes.sh`](scripts/merge-nabec-hbcc-genotypes.sh) is currently _very_ specific to this dataset. 
+```bash
+bash scripts/merge-nabec-hbcc-genotypes.sh
+```
+
+## Calculate fingerprints on whole set
+```bash
+rna='fingerprints/rna/rna-merged.vcf.gz'
+dna='fingerprints/dna/dna-merged.vcf.gz'
+map='hg38_chr.reorder.map'
+output='fingerprints/crosscheck/all-pairs.txt'
+sbatch scripts/crosscheck.sh ${rna} ${dna} ${map} ${output}
+```
+
+## Plot results
+The script [`plot-crosschecks.R`](scripts/plot-crosschecks.R) is _very_ specific to the samples ran in this project, so modify as needed.
+```bash
+module load R/4.3
+Rscript scripts/plot-crosschecks.R
+```
+
+
+# QTL Analysis
 Generate table of samples along with batch and `bam` location
 ```bash
 Rscript scripts/finalize-samples.R

@@ -7,11 +7,21 @@
 
 module load GATK
 
-gatk CrosscheckFingerprints   \
-    --INPUT fingerprints/dna/dna-merged.vcf.gz \
-    --SECOND_INPUT fingerprints/rna/rna-merged.vcf.gz \
-    --HAPLOTYPE_MAP hg38_chr.reorder.map \
+RNAFILE=${1}
+DNAFILE=${2}
+MAPFILE=${3}
+OUTPUTFILE=${4}
+
+if [[ -z ${RNAFILE} ]]; then echo '4 arguments required: RNAFILE DNAFILE MAPFILE OUTPUTFILE'; exit 1; fi
+if [[ -z ${DNAFILE} ]]; then echo '4 arguments required: RNAFILE DNAFILE MAPFILE OUTPUTFILE'; exit 1; fi
+if [[ -z ${MAPFILE} ]]; then echo '4 arguments required: RNAFILE DNAFILE MAPFILE OUTPUTFILE'; exit 1; fi
+if [[ -z ${OUTPUTFILE} ]]; then echo '4 arguments required: RNAFILE DNAFILE MAPFILE OUTPUTFILE'; exit 1; fi
+
+gatk CrosscheckFingerprints \
+    --INPUT ${DNAFILE} \
+    --SECOND_INPUT ${RNAFILE} \
+    --HAPLOTYPE_MAP ${MAPFILE} \
     --CROSSCHECK_BY SAMPLE \
     --CROSSCHECK_MODE CHECK_ALL_OTHERS \
-    --OUTPUT fingerprints/crosscheck/all-pairs.txt
+    --OUTPUT ${OUTPUTFILE}
 
