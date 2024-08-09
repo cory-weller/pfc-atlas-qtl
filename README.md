@@ -13,7 +13,6 @@ mkdir -p fingerprints/rna
 samplefile='sample_bam.txt'
 njobs=$(wc -l $samplefile)
 sbatch --array=1-${njobs}%50 scripts/get-rna-fingerprints.sh ${samplefile}
-sbatch --array=1-${njobs}%50 scripts/get-rna-fingerprints.sh ${samplefile}
 ```
 
 ## 2. Combine RNA fingerprints into one file
