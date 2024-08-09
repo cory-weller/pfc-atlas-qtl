@@ -5,3 +5,7 @@ output/*
 plots/*
 *.zip
 slurm*.out
+*.vcf
+*.vcf.gz
+*.tbi
+*.idx
