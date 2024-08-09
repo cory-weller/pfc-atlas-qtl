@@ -2,13 +2,14 @@
 
 args <- commandArgs(trailingOnly=TRUE)
 FILESTEM <- args[1]
+RNAVCF <- args[2]
 
 library(data.table)
 vcf <- fread('genotypes.common.vcf', header=T)
 samples <- colnames(vcf[,-c(1:9)])
 setnames(vcf, '#CHROM','CHROM')
 
-rnaloci <- fread(cmd="zcat fingerprints-merged-rna.vcf.gz | awk '$1 ~ /^chr/ {print $1,$2,$4,$5}'")
+rnaloci <- fread(cmd=paste0('zcat ', RNAVCF, " | awk '$1 ~ /^chr/ {print $1,$2,$4,$5}'"))
 #rnaloci <- fread(cmd="awk '$1 ~ /^chr/ {print $1,$2,$4,$5}' hg38_chr.reorder.map")
 # Commented out line was only to test cases where flipping is necessary
 
