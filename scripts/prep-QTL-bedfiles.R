@@ -63,20 +63,24 @@ if(!file.exists(rna_features_file)) {
 # NABEC-samples
 modes <- c('rna','atac')
 celltypes <- c('ExN','InN','MG','Oligo','OPC','VC')
-nabec_samples <- fread('data/NABEC-interaction.tsv')$FID
-hbcc_samples <- fread('data/HBCC-interaction.tsv')$FID
 
 mode <- 'rna'
 for(celltype in celltypes) {
-    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_wnn/output/', mode, '/', celltype, '_pseudo_sample_counts.csv')
+    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_wnn/output/', mode, '/', celltype, '_pseudobulk_counts.csv')
     counts <- fread(countsfile)
     setnames(counts, 'V1', 'symbol')
     samplenames <- grep('-ARC$', colnames(counts), value=TRUE)
     # add 'HBCC_' to samples that begin with number
     dt.tmp <- data.table(orig=samplenames)
     dt.tmp[orig %like% '^[0-9]', v2 := paste0('HBCC_', orig)]
+    dt.tmp[orig %like% '^[0-9]', cohort := 'HBCC']
+    
     dt.tmp[orig %like% '^[SUK]', v2 := orig]
+    dt.tmp[orig %like% '^[SUK]', cohort := 'NABEC']
     dt.tmp[, new := gsub('-ARC$', '', v2)]
+    nabec_samples <- dt.tmp[cohort=='NABEC', new]
+    hbcc_samples <- dt.tmp[cohort=='HBCC', new]
+
     setnames(counts, dt.tmp$orig, dt.tmp$new)
     counts <- merge(counts, dat, by='symbol')
     setcolorder(counts, c('chr','TSS_start','TSS_start_plus_1','symbol',dt.tmp$new))
@@ -93,7 +97,7 @@ for(celltype in celltypes) {
 
 mode <- 'atac'
 for(celltype in celltypes) {
-    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_wnn/output/', mode, '/', celltype, '_pseudo_sample_counts.csv')
+    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_wnn/output/', mode, '/', celltype, '_pseudobulk_counts.csv')
     counts <- fread(countsfile)
     counts[, c('chr','start','end') := tstrsplit(V1, split='[-:]')]
     counts[, start := as.numeric(start)]
@@ -104,8 +108,14 @@ for(celltype in celltypes) {
     # add 'HBCC_' to samples that begin with number
     dt.tmp <- data.table(orig=samplenames)
     dt.tmp[orig %like% '^[0-9]', v2 := paste0('HBCC_', orig)]
+    dt.tmp[orig %like% '^[0-9]', cohort := 'HBCC']
+    
     dt.tmp[orig %like% '^[SUK]', v2 := orig]
+    dt.tmp[orig %like% '^[SUK]', cohort := 'NABEC']
     dt.tmp[, new := gsub('-ARC$', '', v2)]
+    nabec_samples <- dt.tmp[cohort=='NABEC', new]
+    hbcc_samples <- dt.tmp[cohort=='HBCC', new]
+
     setnames(counts, dt.tmp$orig, dt.tmp$new)
     setcolorder(counts, c('chr','start','end','V1',dt.tmp$new))
     setnames(counts, 'chr','#chr')
