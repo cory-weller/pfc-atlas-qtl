@@ -2,7 +2,7 @@
 #SBATCH --mem 24g
 #SBATCH --gres gpu:v100x:1,lscratch:50
 #SBATCH --cpus-per-task 56
-#SBATCH --time=24:00:00
+#SBATCH --time=4:00:00
 #SBATCH --partition gpu
 
 module load singularity/4
@@ -11,6 +11,7 @@ module load CUDA/11.4
 cd /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl
 
 N=${SLURM_ARRAY_TASK_ID}
+
 
 PARAMS='data/array-params.tsv'
 
@@ -37,4 +38,5 @@ singularity exec -B ${PWD} --no-home --nv ${tqtl_img} tensorqtl \
 
 # default permutations = 10,000
 # default cis-window = 1,000,000
+
 

@@ -6,18 +6,19 @@ library(ggthemes)
 library(viridis)
 
 # Import covs
-covariates <- read.csv('data/covariates.csv', sep=','); setDT(covariates)
+covariates <- fread('samples.tsv')
 covariates[Brain_bank == 'HBCC', cohort := 'HBCC']
 covariates[Brain_bank != 'HBCC', cohort := 'NABEC']
 covariates[cohort == 'HBCC', sample := paste0('HBCC_',sample)]
+covariates[, 'FID' := gsub('-ARC', '', sample)]
 
 # Import PCs from king
 nabec.geno.pcs <- fread('data/genotypes/NABEC.pruned_pc.txt')
 hbcc.geno.pcs <- fread('data/genotypes/HBCC.pruned_pc.txt')
 
 # Combine dtables
-hbcc <- merge(hbcc.geno.pcs, covariates, by.x='FID', by.y='sample')
-nabec <- merge(nabec.geno.pcs, covariates, by.x='FID', by.y='sample')
+hbcc <- merge(hbcc.geno.pcs, covariates, by.x='FID', by.y='FID')
+nabec <- merge(nabec.geno.pcs, covariates, by.x='FID', by.y='FID')
 dat <- rbindlist(list(hbcc, nabec))
 
 # Convert to factor when necessary
@@ -34,7 +35,7 @@ fwrite(dat, file='data/all-covariates.tsv', quote=F, row.names=F, col.names=T, s
 # Define plotting function
 save_feature_plot <- function(feature, DT, .cohort) {
     DT <- DT[cohort == .cohort]
-    fn <- paste0('plots/', cohort, '-', feature, '.png')
+    fn <- paste0('QC-plots/', cohort, '-', feature, '.png')
     g <- ggplot(DT, aes(x=PC1, y=PC2, color=get(feature))) + geom_point(shape=21) +
     labs(color=feature, title=cohort) +
     theme_few()

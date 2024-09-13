@@ -8,7 +8,7 @@ mode <- args[2]
 celltype <- args[3]
 
 
-counts_fn <- paste0('data/',mode,'/',celltype,'-counts.bed')
+counts_fn <- paste0('data/',mode,'/', cohort, '-', celltype,'-counts.bed')
 subset_counts_fn <- paste0('tensorqtl-subsets/', cohort, '-',mode,'-',celltype,'-counts.bed')
 covariates_fn <- paste0('data/',cohort,'-covariates.txt')
 subset_covariates_fn <- paste0('tensorqtl-subsets/', cohort, '-', mode, '-', celltype, '-covariates.txt')

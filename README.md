@@ -34,7 +34,7 @@ The script [`merge-nabec-hbcc-genotypes.sh`](scripts/merge-nabec-hbcc-genotypes.
 bash scripts/merge-nabec-hbcc-genotypes.sh
 ```
 
-## Calculate fingerprints on whole set
+## 4. Calculate fingerprints on whole set
 ```bash
 rna='fingerprints/rna/rna-merged.vcf.gz'
 dna='fingerprints/dna/dna-merged.vcf.gz'
@@ -56,6 +56,8 @@ Generate table of samples along with batch and `bam` location
 ```bash
 Rscript scripts/finalize-samples.R
 ```
+
+Pseudobulked counts in `/data/CARD_singlecell/brain_atlas_wnn/output/rna/`
 
 Prepare hg38 reference, dict, and haplotype map
 ```bash
@@ -175,7 +177,7 @@ plink --bfile data/genotypes/HBCC_oldID \
 
 ## Copy covariates
 ```bash
-cp /data/CARD_singlecell/brain_atlas_wnn/input/PFC_covariates.csv data/covariates.csv
+cp /data/CARD_singlecell/Brain_atlas/samples.332.20240809.csv data/covariates.csv
 ```
 
 ## LD Prune genotypes
@@ -236,8 +238,8 @@ echo "
 awk '$7 > 0.2 {print $1,$2}' data/genotypes/HBCC.pruned_pc.txt > data/HBCC-remove.txt
 
 
-module load plink/1.9.0-beta4.4 
 plink --bfile data/genotypes/HBCC \
+      --keep-allele-order \
       --remove data/HBCC-remove.txt \
       --make-bed \
       --out data/genotypes/HBCC-forQTL
@@ -262,11 +264,11 @@ See [`intersect-files.R`](scripts/intersect-files.R) which is executed by [`inte
 
 ```bash
 # Subset everything except plink files
-Rscript scripts/intersect-files.sh
+bash scripts/intersect-files.sh
 ```
 
 ## Subset plink files
-This script generates a separate `plink` fileset for every combination of `cohort` `celltype` and `mode` (24 total sets).
+This script generates a separate `plink` fileset for every combination of `cohort` `celltype` and `mode` (28 total sets).
 See [`subset-plink.sh`](scripts/subset-plink.sh)
 ```bash
 bash scripts/subset-plink.sh
@@ -276,7 +278,9 @@ bash scripts/subset-plink.sh
 ## Run tensorQTL
 See [`run-tensorQTL.sh`](scripts/run-tensorQTL.sh)
 ```bash
-sbatch --array=1-24%8 scripts/run-tensorQTL.sh
+sbatch --array=1-28%8 scripts/run-tensorQTL.sh
+#sbatch --array=1,2,5,6,9,10,13,14,17,18,21,22,25,26%8 scripts/run-tensorQTL.sh
+
 ```
 
 # Combine results
@@ -288,3 +292,7 @@ See [`rbind-qtl-results.R`](scripts/rbind-qtl-results.R) which generates three f
 Rscript scripts/rbind-qtl-results.R
 ```
 
+```bash
+wget -O data/00-common_all.vcf.gz https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/00-common_all.vcf.gz
+zgrep -v -F '#' data/00-common_all.vcf.gz | awk '{print $1,$2,$3,$4,$5}' > rsids.txt
+```

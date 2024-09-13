@@ -4,16 +4,17 @@ library(data.table)
 library(ggplot2)
 library(ggthemes)
 library(viridis)
+library(ggrepel)
 
-covs <- fread('data/covariates.csv')
+covs <- fread('samples.tsv')
 
 nabec.pcs <- fread('data/genotypes/NABEC.pruned_pc.txt')
 hbcc.pcs <- fread('data/genotypes/HBCC.pruned_pc.txt')
 
-hbcc.covs <- covs[cohort == 'hbcc']
+hbcc.covs <- covs[cohort == 'HBCC']
 hbcc.covs[, sample := gsub('-ARC$', '', sample,)]
 hbcc.covs[, sample := paste0('HBCC_', sample)]
-nabec.covs <- covs[cohort == 'nabec']
+nabec.covs <- covs[cohort == 'NABEC']
 nabec.covs[, sample := gsub('-ARC$', '', sample,)]
 
 nabec <- merge(nabec.covs, nabec.pcs, by.x='sample', by.y='FID')
@@ -35,6 +36,8 @@ pcs[, LibraryPrep := factor(LibraryPrep)]
 
 plot_cov <- function(DT, .cohort, .cov) {
     dat <- DT[cohort==.cohort]
+    dat[PC1 > 0.2 | PC2 > 0.25 | PC2 < -0.5, 'txt' := IID]
+
 
     g <- ggplot(dat, aes(x=PC1, y=PC2, color=.data[[.cov]])) +
         geom_point() +
@@ -42,12 +45,15 @@ plot_cov <- function(DT, .cohort, .cov) {
     if(! is.factor(dat[[.cov]])) {
         g <- g + scale_color_viridis()
     }
-    outfile <- paste0('plots/', toupper(.cohort), '-', .cov, '.png')
+    outfile <- paste0('QC-plots/', toupper(.cohort), '-', .cov, '.svg')
+    if(.cohort == 'HBCC') {
+        g <- g + geom_text_repel(data=dat, size =1, segment.size=0.2, color='black', max.overlaps=20, min.segment.length = unit(0, 'lines'), aes(label=txt))
+    }
     ggsave(g, file=outfile, width=12, heigh=12, units='cm')
 }
 
 for(i in covs_to_plot) {
-    for(cohort in c('nabec','hbcc')) {
+    for(cohort in c('NABEC','HBCC')) {
         plot_cov(pcs, cohort, i)
     }
 }
