@@ -4,10 +4,10 @@
 
 See [GATK documentation](https://gatk.broadinstitute.org/hc/en-us/articles/360037594711-CrosscheckFingerprints-Picard)
 
-## 1. Get RNA fingerprints
+## 1. Get RNA fingerprints from `BAM`
 Generate a two-column file that contains `SAMPLEID` and `FULL_BAMFILE_PATH` (no header), in my case [`sample_bam.txt`](sample_bam.txt).
 
-Then submit job array with one job per RNA `bam`:
+Then submit job array with one job per RNA `bam`, each running [get-rna-fingerprints.sh](scripts/get-rna-fingerprints.sh)
 ```bash
 mkdir -p fingerprints/rna
 samplefile='sample_bam.txt'
@@ -26,7 +26,7 @@ bgzip rna-merged.vcf
 tabix -p vcf rna-merged.vcf.gz
 ```
 
-## 3. Get DNA fingerprints
+## 3. Get DNA fingerprints from plink `bed/bim/fam`
 [`merge-nabec-hbcc-genotypes.sh`](scripts/merge-nabec-hbcc-genotypes.sh) generates fingerprints file `dna-merged.vcf.gz` 
 
 The script [`merge-nabec-hbcc-genotypes.sh`](scripts/merge-nabec-hbcc-genotypes.sh) is currently _very_ specific to this dataset. 
