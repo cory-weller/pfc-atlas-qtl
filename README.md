@@ -4,6 +4,11 @@
 
 See [GATK documentation](https://gatk.broadinstitute.org/hc/en-us/articles/360037594711-CrosscheckFingerprints-Picard)
 
+## 0. Prepare reference data
+The tool needs a haplotype map file (VCF style) with identical chromosome order as your other inputs.
+I manually reordered the map with a series of `grep` commands, as well as prepare reference and
+sequence dictionary by running [prepare-refdata.sh](scripts/prepare-refdata.sh).
+
 ## 1. Get RNA fingerprints from `BAM`
 Generate a two-column file that contains `SAMPLEID` and `FULL_BAMFILE_PATH` (no header), in my case [`sample_bam.txt`](sample_bam.txt).
 
