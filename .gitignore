@@ -1,4 +1,12 @@
+genotypes/
+QTL-output/
+QTL-pseudobulk-counts/
 logs/*
+old/
+PCA-plots/
+QTL-plots/
+qtl_analysis/
+fingerprints/
 tensorqtl-subsets/*
 data/*
 output/*
