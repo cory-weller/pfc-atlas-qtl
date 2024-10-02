@@ -8,8 +8,8 @@ library(ggrepel)
 
 covs <- fread('samples.tsv')
 
-nabec.pcs <- fread('data/genotypes/NABEC.pruned_pc.txt')
-hbcc.pcs <- fread('data/genotypes/HBCC.pruned_pc.txt')
+nabec.pcs <- fread('genotypes/NABEC_polarized.pruned_pc.txt')
+hbcc.pcs <- fread('genotypes/HBCC_polarized.pruned_pc.txt')
 
 hbcc.covs <- covs[cohort == 'HBCC']
 hbcc.covs[, sample := gsub('-ARC$', '', sample,)]
@@ -45,7 +45,15 @@ plot_cov <- function(DT, .cohort, .cov) {
     if(! is.factor(dat[[.cov]])) {
         g <- g + scale_color_viridis()
     }
-    outfile <- paste0('QC-plots/', toupper(.cohort), '-', .cov, '.svg')
+    # Save SVGs
+    outfile <- paste0('PCA-plots/', toupper(.cohort), '-', .cov, '.svg')
+    if(.cohort == 'HBCC') {
+        g <- g + geom_text_repel(data=dat, size =1, segment.size=0.2, color='black', max.overlaps=20, min.segment.length = unit(0, 'lines'), aes(label=txt))
+    }
+    ggsave(g, file=outfile, width=12, heigh=12, units='cm')
+
+    # Save PNGs
+    outfile <- paste0('PCA-plots/', toupper(.cohort), '-', .cov, '.png')
     if(.cohort == 'HBCC') {
         g <- g + geom_text_repel(data=dat, size =1, segment.size=0.2, color='black', max.overlaps=20, min.segment.length = unit(0, 'lines'), aes(label=txt))
     }

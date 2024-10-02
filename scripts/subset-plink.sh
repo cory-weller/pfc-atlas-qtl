@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
+COHORT=$1
+MODE=$2
+CELLTYPE=$3
+PROJDIR=$4
+
 module load plink/1.9
 
-parallel -j 1 plink \
-  --bfile data/genotypes/{1}-forQTL \
+
+plink \
+  --bfile genotypes \
   --make-bed \
-  --keep-allele-order \
   --output-chr chrM \
-  --geno 0.05 \
-  --hwe 0.000001 \
-  --maf 0.01 \
-  --keep tensorqtl-subsets/{1}-{2}-{3}.txt \
-  --indiv-sort file tensorqtl-subsets/{1}-{2}-{3}.txt \
-  --out tensorqtl-subsets/{1}-{2}-{3}-plink \
-  ::: HBCC NABEC ::: rna atac ::: ExN InN MG VC OPC Oligo Astro
+  --keep-allele-order \
+  --keep samples.txt \
+  --indiv-sort file samples.txt \
+  --out genotypes-forqtl

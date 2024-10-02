@@ -45,6 +45,7 @@ if [[ ! -f "${pruned_bfile}.bed" ]]; then
         --bfile ${bfile} \
         --make-bed \
         --extract ${prune_fn} \
+        --keep-allele-order \
         --out ${pruned_bfile}
 else
     echo "LD-Pruned plink file already exists, skipping"

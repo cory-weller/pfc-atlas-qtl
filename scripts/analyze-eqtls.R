@@ -12,7 +12,9 @@ chrs <- paste0('chr',1:22)
 modes <- c('rna','atac')
 combos <- CJ('cohort'=cohorts, 'celltype'=celltypes, 'mode'=modes, 'chr'=chrs)
 
-summary_stats_fn <- 'cis-QTLs-bonferroni.tsv'
+out_dir <- 'tensorqtl_sumScvi_cpm'
+summary_stats_fn <- paste0(out_dir, '/cis-QTLs-bonferroni.tsv')
+if(! dir.exists(out_dir) ) { dir.create(out_dir) }
 
 get_bonferroni <- function(N_tests, n_celltypes, n_terms, alpha=0.05) {
     # Returns bonferroni-adjusted p-value threshold at a given alpha
@@ -51,16 +53,17 @@ check_ntests <- function(dir) {
 
 # Iterate over parquet files in the 'output' directory
 parquet_counts <- check_ntests(dir='output')
+fwrite(parquet_counts, file=paste0(out_dir, '/parquet_counts.tsv'), quote=F, row.names=F, col.names=T, sep='\t')
 
 # Get bonferroni-adjusted p value threshold for ATAC QTLs
-atac_threshold <-   get_bonferroni(N_tests=sum(parquet_counts[mode=='atac', N]),
+hbcc_threshold <-   get_bonferroni(N_tests=sum(parquet_counts[cohort=='HBCC', N]),
                         n_celltypes=length(celltypes),
                         n_terms=2,
                         alpha=0.05
                     )
 
 # Get bonferroni-adjusted p value threshold for RNA QTLs
-rna_threshold <-    get_bonferroni(N_tests=sum(parquet_counts[mode=='rna', N]), 
+nabec_threshold <-    get_bonferroni(N_tests=sum(parquet_counts[cohort=='NABEC', N]), 
                             n_celltypes=length(celltypes), 
                             n_terms=2, 
                             alpha=0.05
@@ -94,10 +97,10 @@ if(!file.exists(summary_stats_fn)) {
         celltype_i <- row_i[['celltype']]
         mode_i <- row_i[['mode']]
         chr_i <- row_i[['chr']]
-        if(mode_i == 'atac') {
-            p_threshold_i <- atac_threshold
-        } else if(mode_i == 'rna') {
-            p_threshold_i <- rna_threshold
+        if(cohort_i == 'HBCC') {
+            p_threshold_i <- hbcc_threshold
+        } else if(cohort_i == 'NABEC') {
+            p_threshold_i <- nabec_threshold
         }
         import_parquet(cohort = cohort_i,
                         celltype = celltype_i,
@@ -108,6 +111,7 @@ if(!file.exists(summary_stats_fn)) {
 
     }   
     o <- rbindlist(o)
+    # merge in gene IDs
     fwrite(o, file=summary_stats_fn, sep='\t')
     rm(o)
     gc()

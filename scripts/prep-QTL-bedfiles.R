@@ -66,7 +66,7 @@ celltypes <- c('ExN','InN','Astro','MG','Oligo','OPC','VC')
 
 mode <- 'rna'
 for(celltype in celltypes) {
-    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_subtype/output/', mode, '/', celltype, '/cpm_log_pseudobulk_sum_counts.csv')
+    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_subtype/output/', mode, '/', celltype, '/cpm_log_pseudobulk_model_counts.csv')
     counts <- fread(countsfile)
     setnames(counts, 'V1', 'symbol')
     samplenames <- grep('-ARC$', colnames(counts), value=TRUE)
@@ -89,15 +89,15 @@ for(celltype in celltypes) {
     setnames(counts, 'TSS_start_plus_1','end')
     setnames(counts, 'symbol','phenotype_id')
     setkey(counts, '#chr', 'start', 'end')
-    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',hbcc_samples)], file=paste0('data/', mode, '/HBCC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
-    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',nabec_samples)], file=paste0('data/', mode, '/NABEC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
+    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',hbcc_samples)], file=paste0('QTL-pseudobulk-counts/', mode, '-HBCC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
+    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',nabec_samples)], file=paste0('QTL-pseudobulk-counts/', mode, '-NABEC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
 }
 
 
 
 mode <- 'atac'
 for(celltype in celltypes) {
-    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_subtype/output/', mode, '/', celltype, '/cpm_log_pseudobulk_sum_counts.csv')
+    countsfile <- paste0('/data/CARD_singlecell/brain_atlas_subtype/output/', mode, '/', celltype, '/cpm_log_pseudobulk_model_counts.csv')
     counts <- fread(countsfile)
     counts[, c('chr','start','end') := tstrsplit(regions, split='[-:]')]
     counts[, start := as.numeric(start)]
@@ -121,8 +121,8 @@ for(celltype in celltypes) {
     setnames(counts, 'chr','#chr')
     setnames(counts, 'regions','phenotype_id')
     setkey(counts, '#chr', 'start', 'end')
-    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',hbcc_samples)], file=paste0('data/', mode, '/HBCC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
-    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',nabec_samples)], file=paste0('data/', mode, '/NABEC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
+    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',hbcc_samples)], file=paste0('QTL-pseudobulk-counts/', mode, '-HBCC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
+    fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',nabec_samples)], file=paste0('QTL-pseudobulk-counts/', mode, '-NABEC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
 }
 
 

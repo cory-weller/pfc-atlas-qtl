@@ -13,8 +13,8 @@ covariates[cohort == 'HBCC', sample := paste0('HBCC_',sample)]
 covariates[, 'FID' := gsub('-ARC', '', sample)]
 
 # Import PCs from king
-nabec.geno.pcs <- fread('data/genotypes/NABEC.pruned_pc.txt')
-hbcc.geno.pcs <- fread('data/genotypes/HBCC.pruned_pc.txt')
+nabec.geno.pcs <- fread('genotypes/NABEC_polarized.pruned_pc.txt')
+hbcc.geno.pcs <- fread('genotypes/HBCC_polarized.pruned_pc.txt')
 
 # Combine dtables
 hbcc <- merge(hbcc.geno.pcs, covariates, by.x='FID', by.y='FID')
@@ -32,35 +32,8 @@ dat[, Sequencing := factor(Sequencing)]
 # Save as tabular file
 fwrite(dat, file='data/all-covariates.tsv', quote=F, row.names=F, col.names=T, sep='\t')
 
-# Define plotting function
-save_feature_plot <- function(feature, DT, .cohort) {
-    DT <- DT[cohort == .cohort]
-    fn <- paste0('QC-plots/', cohort, '-', feature, '.png')
-    g <- ggplot(DT, aes(x=PC1, y=PC2, color=get(feature))) + geom_point(shape=21) +
-    labs(color=feature, title=cohort) +
-    theme_few()
-
-    if(! is.factor(DT[[feature]])) {
-        g <- g + scale_color_viridis(limits=c(20,100))
-    }
-
-    ggsave(g, file=fn, width=15, height=12, units='cm')
-}
-
-# Get feature plots
-features <- c('Age','Ancestry','Sex','Homogenization','LibraryPrep','Sequencing')
-cohorts <- c('NABEC','HBCC')
-
-for(cohort in cohorts) {
-    for(feature in features) {
-        save_feature_plot(feature, DT=dat, .cohort=cohort)
-    }
-}
-
-
-
-
-exclude_hbcc <- fread('data/HBCC-remove.txt')$FID
+# Remove samples determined to be PC outliers for HBCC
+exclude_hbcc <- fread('genotypes/HBCC_to_remove.txt')$FID
 dat <- dat[! FID %in% exclude_hbcc]
 dat[, Sex := toupper(Sex)]
 
@@ -68,18 +41,23 @@ dat[, Sex := toupper(Sex)]
 dat[Sex=='MALE', Sex := 0]
 dat[Sex=='FEMALE', Sex := 1]
 
+# Generate covariate files
+desired_covs <- c(paste0('PC',1:10), 'Sex')
+hbcc <- dat[cohort == 'HBCC'][, .SD, .SDcols=c('FID',desired_covs)]
+nabec <- dat[cohort == 'NABEC'][, .SD, .SDcols=c('FID',desired_covs)]
+fwrite(hbcc, file='data/HBCC-covariates.tsv', quote=F, row.names=F, col.names=T, sep='\t')
+fwrite(nabec, file='data/NABEC-covariates.tsv', quote=F, row.names=F, col.names=T, sep='\t')
 
-hbcc <- dat[cohort == 'HBCC'][, .SD, .SDcols=c('FID', paste0('PC',1:10), 'Sex', 'Age', 'PMI')]
-# Save interaction (age)
-fwrite(hbcc[, .SD, .SDcols=c('FID','Age')], file='data/HBCC-interaction.tsv', quote=F, row.names=F, col.names=T, sep='\t')
-hbcc.t <- t(hbcc[, !c('Age','FID')])
-colnames(hbcc.t) <- hbcc$FID
-write.csv(hbcc.t, file='data/HBCC-covariates.txt', quote=F)
+# # Save interaction (age)
+# fwrite(hbcc[, .SD, .SDcols=c('FID','Age')], file='data/HBCC-interaction.tsv', quote=F, row.names=F, col.names=T, sep='\t')
+# hbcc.t <- t(hbcc[, !c('Age','FID')])
+# colnames(hbcc.t) <- hbcc$FID
+# write.csv(hbcc.t, file='data/HBCC-covariates.txt', quote=F)
 
 
-nabec <- dat[cohort == 'NABEC'][, .SD, .SDcols=c('FID', paste0('PC',1:10), 'Sex', 'Age', 'PMI')]
-# Save interaction (age)
-fwrite(nabec[, .SD, .SDcols=c('FID','Age')], file='data/NABEC-interaction.tsv', quote=F, row.names=F, col.names=T, sep='\t')
-nabec.t <- t(nabec[, !c('Age','FID')])
-colnames(nabec.t) <- nabec$FID
-write.csv(nabec.t, file='data/NABEC-covariates.txt', quote=F)
+# nabec <- dat[cohort == 'NABEC'][, .SD, .SDcols=c('FID', paste0('PC',1:10), 'Sex', 'Age', 'PMI')]
+# # Save interaction (age)
+# fwrite(nabec[, .SD, .SDcols=c('FID','Age')], file='data/NABEC-interaction.tsv', quote=F, row.names=F, col.names=T, sep='\t')
+# nabec.t <- t(nabec[, !c('Age','FID')])
+# colnames(nabec.t) <- nabec$FID
+# write.csv(nabec.t, file='data/NABEC-covariates.txt', quote=F)
