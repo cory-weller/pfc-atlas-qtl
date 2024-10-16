@@ -191,3 +191,12 @@ See [`rbind-qtl-results.R`](scripts/rbind-qtl-results.R) which generates three f
 ```bash
 Rscript scripts/rbind-qtl-results.R
 ```
+
+
+
+# eQTL Analysis
+To assess expression across genotype, we need a file with alternate allele dosage per variant.
+[`get-alt-allele-dosage.sh`](scripts/get-alt-allele-dosage.sh) extracts such info from `plink` files
+to generate `.traw` files (transposed raw plink genotypes) where columns=samples, rows=variants.
+
+Get list of variants `variant-ids.txt` associated with ATAC or RNA data with `scripts/analyze-eqtls.R`
