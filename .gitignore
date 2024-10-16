@@ -12,6 +12,7 @@ data/*
 output/*
 plots/*
 *.zip
+data/*.gz
 slurm*.out
 *.vcf
 *.vcf.gz
