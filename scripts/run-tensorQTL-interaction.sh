@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task 56
 #SBATCH --time=4:00:00
 #SBATCH --partition gpu
-#SBATCH --output=logs/%j.out
+#SBATCH --output=logs/%A_%a.out
 
 
 BATCHNAME=${1}
@@ -36,6 +36,8 @@ MYCMD=(Rscript ${PROJDIR}/scripts/intersect-files.R \
     --cohort ${COHORT} \
     --mode ${MODE} \
     --celltype ${CELLTYPE} \
+    --covariates Sex \
+    --interaction Age \
     --projdir ${PROJDIR})
 
 if [[ "${EXCLUDE}" != '' ]]; then
@@ -64,10 +66,6 @@ fi
 bash ${PROJDIR}/scripts/subset-plink.sh 
 
 
-
-
-
-
 PREFIX="${COHORT}_${CELLTYPE}_${MODE}"
 PLINK=genotypes-forqtl
 COUNTS=pseudobulk-counts.bed
@@ -85,6 +83,10 @@ singularity exec -B ${PWD} --no-home --nv ${tqtl_img} tensorqtl \
     --output_dir ${PREFIX} \
     --covariates ${COVS} \
     --interaction ${INTERACTION}
+
+# Move covariate/interaction file into output directory for export into permanent storage
+mv ${COVS} ${PREFIX}
+mv ${INTERACTION} ${PREFIX}
 
 cp -r ${PREFIX} ${PROJDIR}/QTL-output/${BATCHNAME}
 
