@@ -141,7 +141,7 @@ Rscript scripts/prep-QTL-bedfiles.R
 ## Manually add feature blacklists
 The file `data/array-params.tsv` can include four columns. By default it will be generated with the
 first three. The fourth column specifying a feature blacklist can be added manually. I used `awk` 
-to add `data/TSS-blacklist.bed` for the ATAC runs.
+to add `data/TSS-blacklist.bed` for the ATAC runs that used the blacklist.
 
 ```bash
 awk '{OFS="\t"; if ($0~/atac/) {print $1,$2,$3,"data/TSS-blacklist.bed"} else {print $0,""}}'  data/array-params.tsv \
@@ -173,7 +173,14 @@ Briefly, the script does the following:
 
 
 ```bash
-sbatch --array=1-28%6 scripts/run-tensorQTL.sh scvicounts-polarized-interaction-noTSS
+sbatch --array=1-28%4 scripts/run-tensorQTL-nominal.sh scvicounts-nominal-oct2
+sbatch --array=1-28%4 scripts/run-tensorQTL-interaction.sh scvicounts-interaction-oct2
+```
+
+# Analyze QTL results
+Retrieved list of rsIDs with [`get-rsids.sh`](scripts/get-rsids.sh)
+```bash
+bash scripts/get-rsids.sh
 ```
 
 # Combine results
@@ -184,10 +191,3 @@ See [`rbind-qtl-results.R`](scripts/rbind-qtl-results.R) which generates three f
 ```bash
 Rscript scripts/rbind-qtl-results.R
 ```
-
-```bash
-wget -O data/00-common_all.vcf.gz https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/00-common_all.vcf.gz
-zgrep -v -F '#' data/00-common_all.vcf.gz | awk '{print $1,$2,$3,$4,$5}' > rsids.txt
-```
-
-

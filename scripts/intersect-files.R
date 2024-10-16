@@ -14,7 +14,9 @@ debug_args <- c(  '--cohort', 'HBCC',
             '--mode', 'atac',
             '--celltype', 'Astro',
             '--projdir', '/home/wellerca/pfc-atlas-qtl',
-            '--exclude', 'data/TSS-blacklist.bed' 
+            '--exclude', 'data/TSS-blacklist.bed',
+            '--interaction', 'Age',
+            '--covariates', 'Sex'
 )
 
 
@@ -40,6 +42,13 @@ parser$add_argument("--exclude", type='character', nargs=1, default=NULL, requir
                     dest="exclude", help="bed file containing feature blacklists with cols chr, start, stop"
                     )
 
+parser$add_argument("--interaction", type='character', nargs=1, default=NULL, required=FALSE, 
+                    dest="interaction", help="Two-column file. Each row contains one sample ID and interaction term"
+                    )
+
+parser$add_argument("--covariates", type='character', nargs='+', default=NULL, required=FALSE, 
+                    dest="covs", help="Covariates of ['Age','Sex','PMI'] to include (in addition to genotype PC1-10)"
+                    )
 
 if(length(commandArgs(trailingOnly=TRUE)) == 0) {
     args <- parser$parse_args(args=debug_args)
@@ -55,7 +64,6 @@ projdir <- args$projdir
 exclude <- args$exclude
 
 
-
 counts_fn <- paste0(projdir, '/QTL-pseudobulk-counts/',mode,'-', cohort, '-', celltype,'-counts.bed')
 subset_counts_fn <- 'pseudobulk-counts.bed'
 covariates_fn <- paste0(projdir, '/data/',cohort,'-covariates.tsv')
@@ -64,8 +72,7 @@ interaction_fn <- paste0(projdir, '/data/',cohort,'-interaction.tsv')
 subset_interaction_fn <- paste0('interaction.tsv')
 
 counts <- fread(counts_fn)
-covariates <- fread(covariates_fn)
-interaction <- fread(interaction_fn)
+
 
 # Get feature blacklist
 ## prepend project dir if relative path given
@@ -110,15 +117,33 @@ if(cohort == 'HBCC') {
                     grep('^UMARY-', colnames(counts), value=TRUE))
 }
 
+covariates <- fread(covariates_fn)
+
 # Get covariates samples
 covariates.samples <- covariates$FID
 
-# Get interaction samples
-interaction.samples <- interaction$FID
-
 # Get intersection
 sampleset <- intersect(counts.samples, covariates.samples)
-sampleset <- intersect(sampleset, interaction.samples)
+
+if(! is.null(args$interaction)) {
+    # Create interaction table from covariates
+    interaction <- covariates[, .SD, .SDcols=c('FID', args$interaction)]
+    setkey(interaction, FID)
+    interaction <- interaction[sampleset]
+    fwrite(interaction, file=subset_interaction_fn, quote=F, row.names=F, col.names=T, sep='\t')
+}
+
+
+# Exclude covariate if not in --covariates
+for(i in c('Age','Sex','PMI')) {
+    if(! i %in% args$covs) {
+        covariates[[i]] <- NULL
+    }
+}
+
+
+
+
 
 # Write intersection
 samples.DT <- data.table(FID=sampleset, IID=sampleset)
@@ -127,9 +152,6 @@ samples.DT <- samples.DT[sampleset]
 
 setkey(covariates, FID)
 covariates <- covariates[sampleset]
-
-setkey(interaction, FID)
-interaction <- interaction[sampleset]
 
 
 fwrite(samples.DT, file='samples.txt',row.names=F, col.names=T, sep='\t', quote=F)
@@ -147,8 +169,7 @@ rownames(covariates) <- c('', rownames(covariates)[2:nrow(covariates)])
 write.table(covariates, file='covariates.txt', quote=F, col.names=F, sep='\t')
 
 
-# Subset interaction
-fwrite(interaction, file=subset_interaction_fn, quote=F, row.names=F, col.names=T, sep='\t')
+
 
 
 stopifnot(identical(covariates[1,], colnames(counts_subset)[5:ncol(counts_subset)]))

@@ -99,7 +99,7 @@ mode <- 'atac'
 for(celltype in celltypes) {
     countsfile <- paste0('/data/CARD_singlecell/brain_atlas_subtype/output/', mode, '/', celltype, '/cpm_log_pseudobulk_model_counts.csv')
     counts <- fread(countsfile)
-    counts[, c('chr','start','end') := tstrsplit(regions, split='[-:]')]
+    counts[, c('chr','start','end') := tstrsplit(peaks, split='[-:]')]
     counts[, start := as.numeric(start)]
     counts[, end := as.numeric(end)]
     counts[, start := ceiling((start+end)/2)]
@@ -117,14 +117,14 @@ for(celltype in celltypes) {
     hbcc_samples <- dt.tmp[cohort=='HBCC', new]
 
     setnames(counts, dt.tmp$orig, dt.tmp$new)
-    setcolorder(counts, c('chr','start','end','regions',dt.tmp$new))
+    setcolorder(counts, c('chr','start','end','peaks',dt.tmp$new))
     setnames(counts, 'chr','#chr')
-    setnames(counts, 'regions','phenotype_id')
+    setnames(counts, 'peaks','phenotype_id')
     setkey(counts, '#chr', 'start', 'end')
     fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',hbcc_samples)], file=paste0('QTL-pseudobulk-counts/', mode, '-HBCC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
     fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',nabec_samples)], file=paste0('QTL-pseudobulk-counts/', mode, '-NABEC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')
 }
 
-
+# Create array-params.tsv
 combos <- CJ('celltype'=celltypes, 'mode'=c('atac','rna'), cohort=c('NABEC','HBCC'))
 fwrite(combos, file='data/array-params.tsv', quote=F, row.names=F, col.names=F, sep='\t')

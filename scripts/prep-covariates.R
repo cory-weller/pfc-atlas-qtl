@@ -42,14 +42,19 @@ dat[Sex=='MALE', Sex := 0]
 dat[Sex=='FEMALE', Sex := 1]
 
 # Generate covariate files
-desired_covs <- c(paste0('PC',1:10), 'Sex')
+desired_covs <- c(paste0('PC',1:10), 'Sex', 'Age', 'PMI')
 hbcc <- dat[cohort == 'HBCC'][, .SD, .SDcols=c('FID',desired_covs)]
 nabec <- dat[cohort == 'NABEC'][, .SD, .SDcols=c('FID',desired_covs)]
 fwrite(hbcc, file='data/HBCC-covariates.tsv', quote=F, row.names=F, col.names=T, sep='\t')
 fwrite(nabec, file='data/NABEC-covariates.tsv', quote=F, row.names=F, col.names=T, sep='\t')
 
 # # Save interaction (age)
+## DEPRECATED: Instead covariates are pulled out of the covariates file, specified by --covariates
+## when running intersect-files.R
+
 # fwrite(hbcc[, .SD, .SDcols=c('FID','Age')], file='data/HBCC-interaction.tsv', quote=F, row.names=F, col.names=T, sep='\t')
+# fwrite(nabec[, .SD, .SDcols=c('FID','Age')], file='data/NABEC-interaction.tsv', quote=F, row.names=F, col.names=T, sep='\t')
+
 # hbcc.t <- t(hbcc[, !c('Age','FID')])
 # colnames(hbcc.t) <- hbcc$FID
 # write.csv(hbcc.t, file='data/HBCC-covariates.txt', quote=F)
@@ -57,7 +62,7 @@ fwrite(nabec, file='data/NABEC-covariates.tsv', quote=F, row.names=F, col.names=
 
 # nabec <- dat[cohort == 'NABEC'][, .SD, .SDcols=c('FID', paste0('PC',1:10), 'Sex', 'Age', 'PMI')]
 # # Save interaction (age)
-# fwrite(nabec[, .SD, .SDcols=c('FID','Age')], file='data/NABEC-interaction.tsv', quote=F, row.names=F, col.names=T, sep='\t')
+# 
 # nabec.t <- t(nabec[, !c('Age','FID')])
 # colnames(nabec.t) <- nabec$FID
 # write.csv(nabec.t, file='data/NABEC-covariates.txt', quote=F)
