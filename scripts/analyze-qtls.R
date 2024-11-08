@@ -10,8 +10,8 @@ library(argparse)
 
 # args <- commandArgs(trailingOnly=TRUE)
 debug_args <- c(
-            '--batch', 'QTL-output/scvicounts-interaction-oct15',
-            '--method', 'interaction'
+            '--batch', 'QTL-output/scvicounts-nominal-oct15',
+            '--method', 'nominal'
 )
 
 parser <- ArgumentParser()
@@ -45,6 +45,11 @@ if(length(commandArgs(trailingOnly=TRUE)) == 0) {
 
 batch <- args$batch
 
+parquet_counts_fn <- paste0(batch, '/parquet_counts.tsv')
+summary_stats_fn <- paste0(batch, '/cis-QTLs-bonferroni.tsv')
+hbcc_dosage_fn <- 'genotypes/HBCC-alt-dosage.traw'
+nabec_dosage_fn <- 'genotypes/NABEC-alt-dosage.traw'
+
 # cohort <- args$cohort
 # mode <- args$mode
 # celltype <- args$celltype
@@ -56,7 +61,6 @@ chrs <- paste0('chr',1:22)
 modes <- c('rna','atac')
 #combos <- CJ('cohort'=cohorts, 'celltype'=celltypes, 'mode'=modes, 'chr'=chrs)
 
-summary_stats_fn <- paste0(batch, '/cis-QTLs-bonferroni.tsv')
 
 # if(! dir.exists(batch_dir) ) { dir.create(batch_dir) }
 
@@ -96,11 +100,15 @@ check_ntests <- function(filenames) {
 
 filenames <- list.files(batch, pattern='*.parquet', full.names=T, recursive=T)
 
+if(! file.exists(parquet_counts_fn)) {
+    # Iterate over parquet files in the 'output' directory
+    parquet_counts <- check_ntests(filenames)
 
-# Iterate over parquet files in the 'output' directory
-parquet_counts <- check_ntests(filenames)
+    fwrite(parquet_counts, file=parquet_counts_fn, quote=F, row.names=F, col.names=T, sep='\t')
+} else {
+    parquet_counts <- fread(parquet_counts_fn)
+}
 
-fwrite(parquet_counts, file=paste0(batch, '/parquet_counts.tsv'), quote=F, row.names=F, col.names=T, sep='\t')
 
 # Get bonferroni-adjusted p value threshold for ATAC QTLs
 hbcc_threshold <-   get_bonferroni(N_tests=sum(parquet_counts[cohort=='HBCC', N]),
@@ -210,6 +218,15 @@ if(!file.exists(summary_stats_fn)) {
 
 qtls <- fread(summary_stats_fn)
 qtls[, .N, by=list(celltype,cohort,mode)]
+
+hbcc.dosage <- fread(hbcc_dosage_fn)
+nabec.dosage <- fread(nabec_dosage_fn)
+
+# CHR POS
+
+# Cell type
+# Gene (feature)
+# Variant (POS)
 
 # if(!file.exists(summary_stats_fn)) {
 #    o <- foreach(i=1:nrow(parquet_counts)) %dopar% {

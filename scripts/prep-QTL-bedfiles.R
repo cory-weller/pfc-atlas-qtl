@@ -25,33 +25,12 @@ if(!file.exists(rna_features_file)) {
     # Subset and rename columns
     dat <- dat[, .SD, .SDcols=c('##date: 2019-09-05', 'V4','V5','gn')]
     dat[, V5 := V4+1]
-    setnames(dat, c('chr','TSS_start','TSS_start_plus_1','symbol'))
-    dat <- dat[chr %in% c(paste0('chr', 1:22), 'chrX')]
-    setkey(dat, chr, TSS_start, TSS_start_plus_1)
-    # Remove duplicate gene entries
-    #       chr     start       end         symbol
-    #     <char>     <int>     <int>         <char>
-    #  1:   chrX 102599512 102714671 ARMCX5-GPRASP2
-    #  2:   chrX 102712495 102753530 ARMCX5-GPRASP2
-    #  3:   chr3  50350695  50358460       CYB561D2
-    #  4:   chr3  50365334  50368197       CYB561D2
-    #  5:  chr22  24556007  24629005           GGT1
-    #  6:  chr22  24594811  24629005           GGT1
-    #  7:  chr15  28701954  28738384        GOLGA8M
-    #  8:  chr15  28719377  28738431        GOLGA8M
-    #  9:  chr10  14838160  14847018         HSPA14
-    # 10:  chr10  14838306  14871741         HSPA14
-    # 11:   chr2 241970683 241977276      LINC01238
-    # 12:   chr2 242087351 242088457      LINC01238
-    # 13:   chr9 105993310 106740875      LINC01505
-    # 14:   chr9 106664754 106702662      LINC01505
-    # 15:   chr5 139273752 139331671          MATR3
-    # 16:   chr5 139293674 139331677          MATR3
-    # 17:   chr1 235328570 235448952           TBCE
-    # 18:   chr1 235367360 235452443           TBCE
-    # 19:   chrX 103918896 103966712        TMSB15B
-    # 20:   chrX 104063871 104076212        TMSB15B
-    dat <- dat[!duplicated(symbol)]
+    setnames(dat, c('chr','start','end','phenotype_id'))
+    dat <- dat[chr %in% c(paste0('chr', 1:22))]
+    setkey(dat, chr, start, end)
+
+    dat <- dat[!duplicated(phenotype_id)]
+    setnames(dat, 'chr','#chr')
     fwrite(dat, file=rna_features_file, quote=F, row.names=F, col.names=T, sep='\t')
 } else {
     dat <- fread(rna_features_file)
@@ -82,11 +61,8 @@ for(celltype in celltypes) {
     hbcc_samples <- dt.tmp[cohort=='HBCC', new]
 
     setnames(counts, dt.tmp$orig, dt.tmp$new)
-    counts <- merge(counts, dat, by='symbol')
-    setcolorder(counts, c('chr','TSS_start','TSS_start_plus_1','symbol',dt.tmp$new))
-    setnames(counts, 'chr','#chr')
-    setnames(counts, 'TSS_start','start')
-    setnames(counts, 'TSS_start_plus_1','end')
+    counts <- merge(counts, dat, by.x='symbol', by.y='phenotype_id')
+    setcolorder(counts, c('#chr','start','end','symbol',dt.tmp$new))
     setnames(counts, 'symbol','phenotype_id')
     setkey(counts, '#chr', 'start', 'end')
     fwrite(counts[, .SD, .SDcols=c('#chr','start','end','phenotype_id',hbcc_samples)], file=paste0('QTL-pseudobulk-counts/', mode, '-HBCC-', celltype, '-counts.bed'), quote=F, row.names=F, col.names=T, sep='\t')

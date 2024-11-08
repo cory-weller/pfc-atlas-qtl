@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "--plinkfile", "genotypes/HBCC_polarized_nooutliers.bed",
+                "--mode","rna",
+                "--celltype","Astro",
+                "--interaction", "Age",
+                "--covariates", "PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10","Sex",
+                "--cohort", "HBCC",
+                "--method", "nominal",
+                "--outdir", "TQL_OUT",
+                "--prefix", "TQTL"
+            ]
+        }
+    ]
+}

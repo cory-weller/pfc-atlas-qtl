@@ -173,8 +173,11 @@ Briefly, the script does the following:
 
 
 ```bash
-sbatch --array=1-28%4 scripts/run-tensorQTL-nominal.sh scvicounts-nominal-oct2
-sbatch --array=1-28%4 scripts/run-tensorQTL-interaction.sh scvicounts-interaction-oct2
+sbatch --array=1-28%4 scripts/run-tensorQTL-nominal.sh cpm-log-sum-nominal-oct28
+sbatch --array=1-28%4 scripts/run-tensorQTL-interaction.sh cpm-log-sum-interaction-oct28
+
+sbatch --array=1-28%4 scripts/run-tensorQTL-nominal.sh cpm-log-nominal-oct29
+sbatch --array=1-28%4 scripts/run-tensorQTL-interaction.sh cpm-log-interaction-oct29
 ```
 
 # Analyze QTL results
@@ -200,3 +203,53 @@ To assess expression across genotype, we need a file with alternate allele dosag
 to generate `.traw` files (transposed raw plink genotypes) where columns=samples, rows=variants.
 
 Get list of variants `variant-ids.txt` associated with ATAC or RNA data with `scripts/analyze-eqtls.R`
+
+# TensorQTL
+```bash
+module load tensorqtl
+
+python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py \
+    --plinkfile genotypes/HBCC_polarized_nooutliers.bed \
+    --mode rna \
+    --celltype Astro \
+    --interaction Age \
+    --covariates PC1 PC2 PC3 PC4 PC5 PC6 PC7 PC8 PC9 PC10 Sex \
+    --cohort HBCC \
+    --method nominal \
+    --outdir TQL_OUT \
+    --prefix TQTL
+
+parallel -j 1 sbatch ./submit-tqtl.sh {1} {2} {3} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC
+
+bash ./tensorqtl.sh python3
+
+#sbatch ./submit-tqtl.sh Astro rna HBCC
+#sbatch ./submit-tqtl.sh Astro rna NABEC
+sbatch ./submit-tqtl.sh Astro atac HBCC
+sbatch ./submit-tqtl.sh Astro atac NABEC
+#sbatch ./submit-tqtl.sh ExN rna HBCC
+#sbatch ./submit-tqtl.sh ExN rna NABEC
+sbatch ./submit-tqtl.sh ExN atac HBCC
+sbatch ./submit-tqtl.sh ExN atac NABEC
+#sbatch ./submit-tqtl.sh InN rna HBCC
+#sbatch ./submit-tqtl.sh InN rna NABEC
+sbatch ./submit-tqtl.sh InN atac HBCC
+sbatch ./submit-tqtl.sh InN atac NABEC
+#sbatch ./submit-tqtl.sh MG rna HBCC
+#sbatch ./submit-tqtl.sh MG rna NABEC
+sbatch ./submit-tqtl.sh MG atac HBCC
+sbatch ./submit-tqtl.sh MG atac NABEC
+#sbatch ./submit-tqtl.sh Oligo rna HBCC
+#sbatch ./submit-tqtl.sh Oligo rna NABEC
+sbatch ./submit-tqtl.sh Oligo atac HBCC
+sbatch ./submit-tqtl.sh Oligo atac NABEC
+#sbatch ./submit-tqtl.sh OPC rna HBCC
+#sbatch ./submit-tqtl.sh OPC rna NABEC
+sbatch ./submit-tqtl.sh OPC atac HBCC
+sbatch ./submit-tqtl.sh OPC atac NABEC
+#sbatch ./submit-tqtl.sh VC rna HBCC
+#sbatch ./submit-tqtl.sh VC rna NABEC
+sbatch ./submit-tqtl.sh VC atac HBCC
+sbatch ./submit-tqtl.sh VC atac NABEC
+```
+
