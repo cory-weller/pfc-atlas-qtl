@@ -35,6 +35,12 @@ parser.add_argument('--celltype',
                     type=str,
                     choices=['Astro', 'ExN', 'InN', 'MG', 'Oligo', 'OPC', 'VC'],
                     help='Celltype')
+parser.add_argument('--chr', 
+                    default=None,
+                    required=True,
+                    type=str,
+                    choices=[f'chr{x}' for x in list(range(1,23))],
+                    help='Celltype')
 parser.add_argument('--mode', 
                     default=None,
                     required=True,
@@ -103,6 +109,7 @@ else:
             if record.levelno in (logging.CRITICAL):
                 sys.exit(1)
 
+
 if args.interaction == ['None']:
     args.interaction = None
 
@@ -153,11 +160,12 @@ if args.plinkfile.endswith('.bed'):
 bedFile =           abspath(f'{args.plinkfile}.bed')
 bimFile =           abspath(f'{args.plinkfile}.bim')
 famFile =           abspath(f'{args.plinkfile}.fam')
-countsFile =        abspath(f'/data/CARD_singlecell/brain_atlas_subtype/output/{args.mode}/{args.celltype}/cpm_sum_log_pseudobulk_model_counts.csv')
 covariatesFile =    abspath(f'data/{args.cohort}-covariates.tsv')
 rnaFeatureFile =    abspath('data/rna/RNA-features.tsv')
 
-countsFile = f'/data/CARD_singlecell/cortex_subtype/output/{args.mode}/{args.celltype}/pseudobulk/{args.cohort.lower()}_cpm_{args.pseudobulkmethod}_log_pseudobulk_model_counts.csv'
+#countsFile = f'/data/CARD_singlecell/cortex_subtype/output/{args.mode}/{args.celltype}/pseudobulk/{args.cohort.lower()}_cpm_{args.pseudobulkmethod}_log_pseudobulk_model_counts.csv'
+countsFile = f'/data/CARD_singlecell/cortex_subtype/output/{args.mode}/{args.celltype}/pseudobulk/{args.cohort.lower()}_cpm_{args.pseudobulkmethod}_pseudobulk_model_counts.csv'
+
 # Check files exist
 requiredFiles = [bedFile, bimFile, famFile, countsFile, covariatesFile, rnaFeatureFile]
 
@@ -302,14 +310,15 @@ else:
     interaction_df_intersect = None
 
 
-logger.info('Samples Used:\n')
-
 # Ensure variant_df chromosome ids are formatted as 'chrN' instead of 'N'
 variant_df['chrom'] = [f'chr{x}' for x in list(variant_df['chrom'])]
 
 # Ensure output directory exists
 os.makedirs(args.outdir, exist_ok=True) 
 
+# Subset chromosome specified by --chr
+counts_df_intersect = counts_df_intersect.loc[pos_df['chr'] == args.chr]
+pos_df = pos_df.loc[pos_df['chr'] == args.chr]
 
 # Permutations NOT RELLY YET IMPLEMENTED
 if args.qtlmethod == 'permute':

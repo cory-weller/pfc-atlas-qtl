@@ -7,12 +7,23 @@ library(viridis)
 library(ggrepel)
 library(foreach)
 
-# Get QTLs
-qtls <- fread('cis-QTLs-bonferroni.tsv')
-qtls <- qtls[mode == 'rna']
-gc()
+# Get non-interaction QTLs
+interaction_qtl_filename <- 'significant-interaction-qtls.tsv.gz'
+noninteraction_qtl_filename <- 'significant-noninteraction-qtls.tsv.gz'
+pbulk_method <- 'sum'
 
-qtls[, .N, by=list(phenotype_id, cohort)]
+# Load and format data
+qtls.noninteraction <- fread(noninteraction_qtl_filename)
+qtls.noninteraction <- qtls.noninteraction[pseudobulk_method == pbulk_method]
+qtls.interaction <- fread(interaction_qtl_filename)
+qtls.interaction <- qtls.interaction[pseudobulk_method == pbulk_method]
+qtls.full <- list(qtls.noninteraction, qtls.interaction)
+
+qtls.noninteraction <- qtls.noninteraction[, .N, by=list(celltype, cohort, mode, interaction)]
+qtls.interaction <- qtls.interaction[, .N, by=list(celltype, cohort, mode, interaction)]
+qtls <- rbindlist(list(qtls.noninteraction, qtls.interaction))
+
+
 qtls[celltype == 'ExN', celltype := 'Excitatory Neuron']
 qtls[celltype == 'InN', celltype := 'Inhibitory Neuron']
 qtls[celltype == 'MG', celltype := 'Microglia']
@@ -20,6 +31,11 @@ qtls[celltype == 'Oligo', celltype := 'Oligodendrocyte']
 qtls[celltype == 'OPC', celltype := 'OPC']
 qtls[celltype == 'VC', celltype := 'Vascular Cell']
 qtls[celltype == 'Astro', celltype := 'Astrocyte']
+qtls[, celltype := factor(celltype, levels=c('Excitatory Neuron','Inhibitory Neuron','Astrocyte','Microglia','Oligodendrocyte','OPC','Vascular Cell'))]
+
+qtls[, cohort_total := sum(N), by=list(cohort, mode, interaction)]
+qtls[, Proportion := N/cohort_total]
+
 
 plt.colors <- c(
     'Oligodendrocyte' = '#945247ff',
@@ -31,39 +47,17 @@ plt.colors <- c(
     'Vascular Cell' = '#f26ec5ff'    
     )
 
-
-qtls[, celltype := factor(celltype, levels=c('Excitatory Neuron','Inhibitory Neuron','Astrocyte','Microglia','Oligodendrocyte','OPC','Vascular Cell'))]
-
-geno <- qtls[GenoAssoc==TRUE][, .N, by=list(celltype, cohort)]
-geno[, cohort_total := sum(N), by=cohort]
-geno[, Proportion := N/cohort_total]
-#age <- qtls[AgeAssoc==TRUE][, .N, by=list(celltype, cohort, phenotype_id)]
-#age[, cohort_total := sum(N), by=cohort]
-#age[, Proportion := N/cohort_total]
-inter <- qtls[Interaction==TRUE][, .N, by=list(celltype, cohort)]
-inter[, cohort_total := sum(N), by=cohort]
-inter[, Proportion := N/cohort_total]
-
-geno[, signif := 'eQTL']
-#age[, signif := 'Age-associated']
-inter[, signif := 'interaction QTL']
-
-#dat <- rbindlist(list(geno, age, inter))
-dat <- rbindlist(list(geno, inter))
-
-#fwrite(dat, file='QTL-plots/eQTL-counts.tsv', sep='\t')
-
 plot_nqtls <- function(DT, clrs) {
     ggplot(DT, aes(x=cohort, y=N, fill=celltype)) +
     geom_bar(stat='identity') +
     theme_few(14) +
-    labs(fill='Cell Type', x='Cohort', y='Number', title='Significant at alpha=0.05 (Bonferroni)') +
-    facet_grid(.~signif) +
+    labs(fill='Cell Type', x='Cohort', y='Number', title='Significant QTLs (BH correction)') +
+    facet_grid(mode~interaction, scales='free_y', labeller=labeller(.rows=label_both,.cols=label_both)) +
     guides(fill = guide_legend()) +
     scale_fill_manual(values=clrs)
 }
-
-g1 <- plot_nqtls(dat, plt.colors)
+options(scipen = 999) 
+g1 <- plot_nqtls(qtls, plt.colors)
 ggsave(g1, file='QTL-plots/N-QTLs.png', width=20, height=20, units='cm')
 ggsave(g1, file='QTL-plots/N-QTLs.svg', width=20, height=20, units='cm')
 
@@ -71,13 +65,13 @@ plot_propqtls <- function(DT, clrs) {
     ggplot(DT, aes(x=cohort, y=Proportion, fill=celltype)) +
     geom_bar(stat='identity') +
     theme_few(14) +
-    labs(fill='Cell Type', x='Cohort', y='Proportion', title='Significant at alpha=0.05 (Bonferroni)') +
-    facet_grid(.~signif) +
+    labs(fill='Cell Type', x='Cohort', y='Proportion', title='Significant QTLs (BH correction)') +
+    facet_grid(mode~interaction, scales='free_y', labeller=labeller(.rows=label_both,.cols=label_both)) +
     guides(fill = guide_legend()) +
     scale_fill_manual(values=clrs)
 }
 
-g2 <- plot_propqtls(dat, plt.colors)
+g2 <- plot_propqtls(qtls, plt.colors)
 ggsave(g2, file='QTL-plots/Proportion-QTLs.png', width=20, height=20, units='cm')
 ggsave(g2, file='QTL-plots/Proportion-QTLs.svg', width=20, height=20, units='cm')
 
@@ -164,6 +158,7 @@ ggsave(g2, file='QTL-plots/Proportion-QTLs.svg', width=20, height=20, units='cm'
 #     return(g)
 # }
 
+if(FALSE) {
 # d1 <- plot_celltype_qtl_ranks(qtls, 'HBCC', 'Astrocyte', 'AgeAssoc')
 AD_GWAS_fn <- 'data/AD_Bellenguez_GrCh38_full.csv.gz'
 AD_GWAS <- fread(AD_GWAS_fn)
@@ -201,7 +196,7 @@ dat.merge[Interaction==TRUE & AD_GWAS_SIGNIF==TRUE][!duplicated(id)] # 17 varian
 
 dat.merge[Interaction==TRUE & AD_GWAS_SIGNIF==TRUE][!duplicated(id)][, .N, by=phenotype_id][order(-N)]
 
-
+}
 # STMN4
 # APP
 # MAPT
@@ -217,6 +212,7 @@ get_loci <- function(.DT, .gene) {
 # Read in dosage genotype table
 genos <- fread('data/alt-allele-dosage.tsv', select=c('ID','Sample','Dosage'))
 # Subset loci that we care about in QTL table
+qtls <- qtls.full[[1]] # RNA
 genos <- genos[ID %chin% qtls$variant_id]
 genos[Sample %like% '^HBCC', Cohort := 'HBCC']
 genos[Sample %like% '^[USK]', Cohort := 'NABEC']

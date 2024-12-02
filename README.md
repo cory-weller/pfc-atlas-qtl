@@ -220,36 +220,14 @@ python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py 
     --prefix TQTL
 
 parallel -j 1 sbatch ./submit-tqtl.sh {1} {2} {3} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC
+parallel -j 1 sbatch ./submit-tqtl.sh {1} {2} {3} ::: Astro ExN InN MG Oligo OPC VC  ::: atac ::: HBCC NABEC
 
 bash ./tensorqtl.sh python3
 
-#sbatch ./submit-tqtl.sh Astro rna HBCC
-#sbatch ./submit-tqtl.sh Astro rna NABEC
-sbatch ./submit-tqtl.sh Astro atac HBCC
-sbatch ./submit-tqtl.sh Astro atac NABEC
-#sbatch ./submit-tqtl.sh ExN rna HBCC
-#sbatch ./submit-tqtl.sh ExN rna NABEC
-sbatch ./submit-tqtl.sh ExN atac HBCC
-sbatch ./submit-tqtl.sh ExN atac NABEC
-#sbatch ./submit-tqtl.sh InN rna HBCC
-#sbatch ./submit-tqtl.sh InN rna NABEC
-sbatch ./submit-tqtl.sh InN atac HBCC
-sbatch ./submit-tqtl.sh InN atac NABEC
-#sbatch ./submit-tqtl.sh MG rna HBCC
-#sbatch ./submit-tqtl.sh MG rna NABEC
-sbatch ./submit-tqtl.sh MG atac HBCC
-sbatch ./submit-tqtl.sh MG atac NABEC
-#sbatch ./submit-tqtl.sh Oligo rna HBCC
-#sbatch ./submit-tqtl.sh Oligo rna NABEC
-sbatch ./submit-tqtl.sh Oligo atac HBCC
-sbatch ./submit-tqtl.sh Oligo atac NABEC
-#sbatch ./submit-tqtl.sh OPC rna HBCC
-#sbatch ./submit-tqtl.sh OPC rna NABEC
-sbatch ./submit-tqtl.sh OPC atac HBCC
-sbatch ./submit-tqtl.sh OPC atac NABEC
-#sbatch ./submit-tqtl.sh VC rna HBCC
-#sbatch ./submit-tqtl.sh VC rna NABEC
-sbatch ./submit-tqtl.sh VC atac HBCC
-sbatch ./submit-tqtl.sh VC atac NABEC
+parallel -j 1 echo  {1} {2} {3} {4} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC ::: $(seq 1 22) > data/array-params.txt
+
+
+sbatch --array=1-616%30 ./submit-tqtl.sh
+
 ```
 

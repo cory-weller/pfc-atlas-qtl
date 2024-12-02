@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
 #SBATCH --mem 24g
 #SBATCH --cpus-per-task 2
-#SBATCH --time=2:00:00
-#SBATCH --partition quick
+#SBATCH --time=3:59:00
+#SBATCH --partition quick,norm
 
 # If GPU needed in future...
 ####SBATCH --gres gpu:v100x:1,lscratch:50
 
 module load tensorqtl
 
-windowsize=100000
+windowsize=1000000
 
-celltype=${1}
-mode=${2}
-cohort=${3}
+N=${SLURM_ARRAY_TASK_ID}
+
+paramsfile='data/array-params.txt'
+
+celltype=$(sed -n ${N}p ${paramsfile}  | awk '{print $1}')
+mode=$(sed -n ${N}p ${paramsfile} | awk '{print $2}')
+cohort=$(sed -n ${N}p ${paramsfile} | awk '{print $3}')
+chr=$(sed -n ${N}p ${paramsfile} | awk '{print $4}')
+
 
 for method in mean sum; do
     # run Nominal, no interaction
@@ -26,7 +32,8 @@ for method in mean sum; do
         --qtlmethod nominal \
         --outdir QTL-output \
         --pseudobulkmethod ${method} \
-        --window ${windowsize}
+        --window ${windowsize} \
+        --chr chr${chr}
 
     # run Nominal, interaction with Age
     python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py \
@@ -38,6 +45,8 @@ for method in mean sum; do
         --qtlmethod nominal \
         --outdir QTL-output \
         --pseudobulkmethod ${method} \
-        --window ${windowsize}
+        --window ${windowsize} \
+        --chr chr${chr}
+
 done
 
