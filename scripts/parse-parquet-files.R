@@ -28,6 +28,43 @@ celltype <- myvars[2]
 mode <- myvars[3]
 interaction <- myvars[5]
 
+inflation <- function(ps) {
+    chisq <- qchisq(1 - ps, 1)
+    lambda <- median(chisq) / qchisq(0.5, 1)
+    lambda
+}
+
+if(FALSE) {
+    # Iterate over parquet files and bind together
+    foreach(method=c('sum'), .combine='rbind') %do% {
+        qtldir <- paste0('QTL-output/', method, '-nominal-20241124')
+        qtldirs <- list.dirs(qtldir, recursive=FALSE)
+        foreach(mydir=qtldirs, .combine='rbind') %do% {
+
+            files <- list.files(mydir, recursive=TRUE, include.dirs=TRUE, pattern='*.parquet', full.names=T)
+            myvars <- unlist(strsplit(basename(mydir), split='-'))
+            cohort <- myvars[1]
+            celltype <- myvars[2]
+            mode <- myvars[3]
+            interaction <- myvars[5]
+
+            o <- foreach(fn=files, .combine='rbind') %do% {
+                            dat <- arrow::read_parquet(fn)
+                            setDT(dat)
+                            samplesize <- floor(nrow(dat) * 1e-4)
+                            return(dat[sample(.N, size=samplesize)])
+            }
+
+            png(paste0('QQ/', cohort, '-', celltype, '-', mode, '.png'))
+            qq(o$pval_nominal)
+            dev.off()
+
+            mylambda <- inflation(o$pval_nominal)
+            return(data.table(cohort, celltype, method, mode, interaction, 'lambda'=mylambda))
+        }   
+    }
+}
+
 # Iterate over parquet files and bind together
 o <- foreach(fn=files, .combine='rbind') %do% {
                 dat <- arrow::read_parquet(fn)

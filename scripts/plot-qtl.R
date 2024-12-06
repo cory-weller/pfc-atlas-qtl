@@ -9,22 +9,60 @@ registerDoMC(cores=4)
 library(ggplot2)
 library(ggthemes)
 
+setwd('/data/CARD_singlecell/users/wellerca/pfc-atlas-qtl')
+
 featurefile <- 'data/cpm_sum_counts.RDS'
+
+# Get all ATAC features
+
+files <- list.files('/data/CARD_singlecell/cortex_subtype/output/atac', recursive=T, pattern='*_cpm_sum_pseudobulk_model_counts.csv', full.names=T)
+atac_features <- foreach(file=files, .combine='rbind') %do% {
+     fread(file, select='peaks')
+}
+
+setnames(atac_features, 'feature')
+
+atac_features <- unique(atac_features)
+atac_features[, c('chr','start','end') := tstrsplit(feature, split=':')]
+atac_features[, start := as.numeric(start)]
+atac_features[, end := as.numeric(end)]
+
+library(GenomicRanges)
+all_peaks <- makeGRangesFromDataFrame(atac_features, keep.extra.columns=TRUE)
+merged_peaks <- reduce(all_peaks)
+overlaps <- findOverlaps(all_peaks, merged_peaks)
+final_peakset <- cbind(atac_features, as.data.table(merged_peaks[overlaps@to]@ranges))
+setnames(final_peakset, c('feature_before','chr','start_before','end_before','start','end','width'))
+final_peakset[, 'feature' := paste0(chr, '_', start, '_', end)]
+final_peakset[, width_before := end_before - start_before]
+final_peakset[, feature_before := gsub(':', '_', feature_before)]
+
+signif_interaction <- fread('significant-interaction-qtls.tsv.gz')
+signif_interaction <- signif_interaction[pseudobulk_method=='sum']
+
+signif_noninteraction <- fread('significant-noninteraction-qtls.tsv.gz')
+signif_noninteraction <- signif_noninteraction[pseudobulk_method=='sum']
+
+signif_atac_features <- unique(sort(c(signif_interaction[mode=='atac'][['phenotype_id']], signif_noninteraction[mode=='atac'][['phenotype_id']])))
+signif_rna_features <- unique(sort(c(signif_interaction[mode=='rna'][['phenotype_id']], signif_noninteraction[mode=='rna'][['phenotype_id']])))
+
+
+# Get set of peaks that overlap with a significant peak
+signif_merged_peaks <- final_peakset[feature_before %in% signif_atac_features]$feature
+signif_peakset <- final_peakset[feature %in% signif_merged_peaks]
+signif_unmerged_peaks <- signif_peakset$feature_before
+
+
+signif_features <- unique(sort(c(signif_unmerged_peaks, signif_rna_features)))
+
+
+
+
 
 # Get table of feature counts
 if(file.exists(featurefile)) {
     featurecounts <- readRDS(featurefile)
 } else {
-    # get list of all significant features
-    signif_interaction <- fread('significant-interaction-qtls.tsv.gz')
-    signif_interaction <- signif_interaction[['phenotype_id']]
-    signif_noninteraction <- fread('significant-noninteraction-qtls.tsv.gz')
-    signif_noninteraction <- signif_noninteraction[['phenotype_id']]
-    signif_features <- unique(sort(c(signif_interaction, signif_noninteraction)))
-
-
-    # Subset pseudobulk counts to these features
-
     signif_features <- gsub('_', ':', signif_features)
 
     get_subset <- function(cohort, mode, celltypes=c('ExN','InN','Astro','MG','Oligo','OPC','VC'), signif_features) {
@@ -49,6 +87,7 @@ if(file.exists(featurefile)) {
                 get_subset(cohort=cohort, mode=mode, signif_features=signif_features)
             }
     }
+    
     # Add in age info
     agetable <- fread('data/covariates.csv', select=c('sample','Sex','Age'))
     agetable[sample %like% 'UMARY-', sample:=gsub('-ARC','',sample)]
@@ -63,8 +102,14 @@ if(file.exists(featurefile)) {
     saveRDS(featurecounts, file=featurefile)
 }
 
+# Add in new feature counts
+setnames(featurecounts, 'feature', 'feature_before')
+featurecounts <- merge(featurecounts, final_peakset[, .SD, .SDcols=c('feature_before','feature')], by='feature_before', all=TRUE)
+featurecounts[mode=='rna', feature := feature_before]
+featurecounts[, 'feature_before' := NULL]
+featurecounts <- featurecounts[!is.na(sample)]
 
-
+# What happened to feature 'chr6:4134024:4134696'
 
 # Load genotypes
 genotypes.hbcc <- fread('genotypes/HBCC-alt-dosage.traw')
@@ -76,7 +121,12 @@ setkey(genotypes.nabec, CHR, POS)
 plot_qtl <- function(hbcc_dt=genotypes.hbcc,
                     nabec_dt=genotypes.nabec,
                     feature_dt=featurecounts,
-                        variant_id, feature_name, interaction) {
+                        variant_id,
+                        feature_name,
+                        interaction,
+                        translate_dt=feature_old_new) {
+
+    feature_name <- feature_old_new[.(feature_name), feature]
     # Columns to exclude when finding sample IDs
     infocols <- c('CHR','SNP','(C)M','POS','COUNTED','ALT')
     variant_chr <- unlist(strsplit(variant_id, split=':'))[1]
@@ -95,11 +145,12 @@ plot_qtl <- function(hbcc_dt=genotypes.hbcc,
     nabec_genotypes <- melt(nabec_sub, measure.vars=setdiff(colnames(genotypes.nabec), infocols), variable.name='sample',value.name='alt_dosage')
     nabec_genotypes <- nabec_genotypes[!is.na(alt_dosage)]
 
+    # Merge genotypes together
     genotypes <- rbindlist(list(hbcc_genotypes, nabec_genotypes))
     genotypes[, alt_dosage := factor(alt_dosage, levels=c(0,1,2))]
     features <- feature_dt[feature==feature_name]
 
-    # Merge
+    # Merge genotypes with feature counts
     setkey(genotypes, sample)
     setkey(features, sample)
     dat <- merge(genotypes, features)
@@ -131,10 +182,32 @@ plot_qtl <- function(hbcc_dt=genotypes.hbcc,
 qtls <- fread('significant-noninteraction-qtls.tsv.gz')[pseudobulk_method == 'sum']
 interaction_qtls <- fread('significant-interaction-qtls.tsv.gz')[pseudobulk_method == 'sum']
 
+# Save table of old-to-new feature mapping
+feature_old_new <- copy(unique(featurecounts[, .SD, .SDcols=c('feature_before','feature')]))
+
+# Add column of new feature ID
+qtls <- merge(feature_old_new, qtls, by.x='feature_before', by.y='phenotype_id')
+interaction_qtls <- merge(feature_old_new, interaction_qtls, by.x='feature_before', by.y='phenotype_id')
+ 
+
+qtls[, c('chr','start','end') := tstrsplit(feature_before, split='_')]
+qtls[, start := as.numeric(start)]
+qtls[, end := as.numeric(end)]
+
+interaction_qtls[, c('chr','start','end') := tstrsplit(feature_before, split='_')]
+interaction_qtls[, start := as.numeric(start)]
+interaction_qtls[, end := as.numeric(end)]
+
+# Aggregate cpm per newly mapped feature
+featurecounts <- featurecounts[, list(N_peaks_merged=.N, 'cpm_sum'=sum(cpm_sum, na.rm=T)), by=list(sample, celltype, cohort, mode, Sex, Age, feature)]
+
+
+
+
 # Plot (non-interaction) QTLs
- plot_qtl(feature_name='CHRM5', variant_id='chr15:33984369:G:A', interaction='None')
- plot_qtl(feature_name='DPP10', variant_id='chr2:113698175:A:G', interaction='None')
+plot_qtl(feature_name='CHRM5', variant_id='chr15:33984369:G:A', interaction='None')
+plot_qtl(feature_name='DPP10', variant_id='chr2:113698175:A:G', interaction='None')
 
 
 # Plot (age interaction) QTLs
- plot_qtl(feature_name='CHRM5', variant_id='chr15:33984369:G:A', interaction='Age')
+plot_qtl(feature_name='chr6_4134726_4136360', variant_id='chr6:4945769:G:A', interaction='Age')
