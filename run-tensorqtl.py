@@ -59,6 +59,12 @@ parser.add_argument('--covariates',
                     type=str,
                     nargs='*',
                     help='List of model covariates to be included from covariates file, e.g. --covariates PC1 PC2 Sex Age')
+parser.add_argument('--modality-covariates', 
+                    default=None,
+                    required=False,
+                    type=str,
+                    nargs='*',
+                    help='List of modality covariates to be included from covariates file, e.g. --modality-covariates PC1 PC2')
 parser.add_argument('--interaction', 
                     default=None,
                     required=False,
@@ -118,6 +124,7 @@ if args.cohort == 'NABEC':
 elif args.cohort == 'HBCC':
     args.plinkfile = '/data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/genotypes/HBCC_polarized_nooutliers.bed'
 
+
 eh = ExitHandler()
 logger.addHandler(eh)
 
@@ -162,12 +169,17 @@ bimFile =           abspath(f'{args.plinkfile}.bim')
 famFile =           abspath(f'{args.plinkfile}.fam')
 covariatesFile =    abspath(f'data/{args.cohort}-covariates.tsv')
 rnaFeatureFile =    abspath('data/rna/RNA-features.tsv')
+modalityCovariatesFile = abspath(f'data/{args.cohort.lower()}-{args.celltype}-{args.mode}-PCs.tsv')
 
-#countsFile = f'/data/CARD_singlecell/cortex_subtype/output/{args.mode}/{args.celltype}/pseudobulk/{args.cohort.lower()}_cpm_{args.pseudobulkmethod}_log_pseudobulk_model_counts.csv'
 countsFile = f'/data/CARD_singlecell/cortex_subtype/output/{args.mode}/{args.celltype}/pseudobulk/{args.cohort.lower()}_cpm_{args.pseudobulkmethod}_pseudobulk_model_counts.csv'
 
 # Check files exist
+
 requiredFiles = [bedFile, bimFile, famFile, countsFile, covariatesFile, rnaFeatureFile]
+
+if args.modality_covariates is not None:
+    requiredFiles.append(modalityCovariatesFile)
+
 
 missingFiles = 0
 for file in requiredFiles:
@@ -262,6 +274,16 @@ else:
 covariates_df = pd.read_csv(covariatesFile, sep=None, engine='python')
 covariates_df.set_index('FID', inplace=True)
 
+# Load modality covariates
+if args.modality_covariates is not None:
+    modality_covariates_df = pd.read_csv(modalityCovariatesFile, sep=None, engine='python')
+    modality_covariates_df = modality_covariates_df.rename(columns={'sample':'FID'})
+    modality_covariates_df.set_index('FID', inplace=True)
+    for term in args.modality_covariates:
+        if term not in modality_covariates_df.columns:
+            logger.error(f"Interaction term {term} is not in provided modality covariates file!")
+    modality_covariates_df = modality_covariates_df[args.modality_covariates]
+    modality_covariates_df.rename(columns=lambda x: f'{args.mode}_{x}', inplace=True)
 
 # Get interactions
 if args.interaction is not None:
@@ -277,7 +299,9 @@ for term in args.covariates:
         logger.error(f"Covariate term {term} is not in provided covariates file!")
 
 covariates_df = covariates_df[args.covariates]
+covariates_df.rename(columns=lambda x: x.replace('PC', 'geno_PC'), inplace=True)
 
+covariates_df = modality_covariates_df.join(covariates_df, how='inner')
 
 # Get genotypes
 from tensorqtl import genotypeio, cis, trans
