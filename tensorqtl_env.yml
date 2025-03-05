@@ -1,0 +1,20 @@
+name: tensorqtl
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+- python=3.11
+- pip
+- r==4.4.0
+- bioconductor-qvalue
+- pip:
+  - numpy
+  - pandas
+  - pandas-plink
+  - Pgenlib>=0.90.1
+  - pyarrow
+  - qtl
+  - rpy2
+  - scipy
+  - torch
+  - tensorqtl

@@ -9,8 +9,5 @@
 module unload
 module load R/4.3
 
-export QTLMETHOD='mean'
-Rscript scripts/parse-parquet-files.R
-
 export QTLMETHOD='sum'
 Rscript scripts/parse-parquet-files.R

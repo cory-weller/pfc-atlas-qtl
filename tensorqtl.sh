@@ -1,5 +1,5 @@
 #!/bin/bash
-
+module load singularity
 . /usr/local/current/singularity/app_conf/sing_binds
 
 export SINGULARITY_BINDPATH="/usr/local/apps,/usr/local/CUDA,/usr/local/cuDNN,/usr/local/Qt,$SINGULARITY_BINDPATH"

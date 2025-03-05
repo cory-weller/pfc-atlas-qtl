@@ -26,7 +26,7 @@ method='sum'
 python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py \
     --mode ${mode} \
     --celltype ${celltype} \
-    --covariates PC1 PC2 PC3 PC4 PC5 Sex Age \
+    --covariates PC1 PC2 PC3 PC4 PC5 Sex Age PMI \
     --modality-covariates PC1 PC2 PC3 PC4 PC5 \
     --cohort ${cohort} \
     --interaction None \
@@ -40,7 +40,7 @@ python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py 
 python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py \
     --mode ${mode} \
     --celltype ${celltype} \
-    --covariates PC1 PC2 PC3 PC4 PC5 PC6 PC7 PC8 PC9 PC10 Sex \
+    --covariates PC1 PC2 PC3 PC4 PC5 Sex PMI \
     --modality-covariates PC1 PC2 PC3 PC4 PC5 \
     --cohort ${cohort} \
     --interaction Age \

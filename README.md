@@ -227,7 +227,10 @@ bash ./tensorqtl.sh python3
 parallel -j 1 echo  {1} {2} {3} {4} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC ::: $(seq 1 22) > data/array-params.txt
 
 
-sbatch --array=1-616%30 ./submit-tqtl.sh
+# Run jobs
+sbatch --array=1-616%50 ./submit-tqtl.sh
 
+scripts/parse-parquet-files.sh
+# Parse parquet files
 ```
 

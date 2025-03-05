@@ -1,11 +1,13 @@
 args = [
-    "--mode","atac",
+    "--mode","rna",
     "--celltype","Astro",
-    "--covariates", "PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10","Sex","Age",
+    "--covariates", "PC1","PC2","PC3","PC4","PC5","Sex","Age",
+    "--modality-covariates", "PC1","PC2","PC3","PC4","PC5",
     "--cohort", "NABEC",
     "--qtlmethod", "nominal",
     "--interaction", "None",
     "--outdir", "QTL-output",
     "--window", '1000000',
-    "--pseudobulkmethod","sum"
+    "--pseudobulkmethod","sum",
+    "--chr","chr1"
 ]

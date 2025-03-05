@@ -3,6 +3,7 @@
 library(data.table)
 library(foreach)
 
+# testline
 
 o <- foreach(method=c('mean','sum'), .combine='rbind') %do% {
 
