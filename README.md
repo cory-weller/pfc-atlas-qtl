@@ -206,31 +206,15 @@ Get list of variants `variant-ids.txt` associated with ATAC or RNA data with `sc
 
 # TensorQTL
 ```bash
-module load tensorqtl
 
-python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py \
-    --plinkfile genotypes/HBCC_polarized_nooutliers.bed \
-    --mode rna \
-    --celltype Astro \
-    --interaction Age \
-    --covariates PC1 PC2 PC3 PC4 PC5 PC6 PC7 PC8 PC9 PC10 Sex \
-    --cohort HBCC \
-    --method nominal \
-    --outdir TQL_OUT \
-    --prefix TQTL
-
-parallel -j 1 sbatch ./submit-tqtl.sh {1} {2} {3} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC
-parallel -j 1 sbatch ./submit-tqtl.sh {1} {2} {3} ::: Astro ExN InN MG Oligo OPC VC  ::: atac ::: HBCC NABEC
-
-bash ./tensorqtl.sh python3
-
+# Set up file with all combinations of parameters
 parallel -j 1 echo  {1} {2} {3} {4} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC ::: $(seq 1 22) > data/array-params.txt
 
 
-# Run jobs
+# Run jobs, 50 at a time
 sbatch --array=1-616%50 ./submit-tqtl.sh
 
-scripts/parse-parquet-files.sh
 # Parse parquet files
+scripts/parse-parquet-files.sh
 ```
 
