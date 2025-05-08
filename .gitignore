@@ -18,3 +18,5 @@ slurm*.out
 *.vcf.gz
 *.tbi
 *.idx
+.python_history
+.Rhistory

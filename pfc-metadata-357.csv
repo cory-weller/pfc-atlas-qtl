@@ -1,0 +1,358 @@
+SampleID,Ethnicity,Race,PMI,Sex,Age,Brain_bank,Ancestry,cohort,batch
+HBCC-1193,Not Hispanic or Latino,Black or African-American,51,Male,49.8,HBCC,African,HBCC,10
+HBCC-2304,Not Hispanic or Latino,Black or African-American,55.5,Male,57.9,HBCC,African,HBCC,8
+HBCC-846,Not Hispanic or Latino,Black or African-American,15,Male,58.5,HBCC,African,HBCC,9
+HBCC-1548,Not Hispanic or Latino,Black or African-American,26,Male,37.6,HBCC,African,HBCC,9
+HBCC-1536,Not Hispanic or Latino,Black or African-American,57,Male,53.3,HBCC,African,HBCC,6
+HBCC-1111,Not Hispanic or Latino,Black or African-American,22.5,Male,51.6,HBCC,African,HBCC,9
+HBCC-890,Not Hispanic or Latino,Black or African-American,36.5,Male,18.2,HBCC,African,HBCC,10
+HBCC-2605,Not Hispanic or Latino,Black or African-American,30.5,Female,57.4,HBCC,African,HBCC,9
+HBCC-1105,Not Hispanic or Latino,Black or African-American,89.5,Female,44.2,HBCC,African,HBCC,9
+HBCC-845,Not Hispanic or Latino,Black or African-American,43.5,Male,24.8,HBCC,African,HBCC,9
+HBCC-1884,Not Hispanic or Latino,Black or African-American,25,Male,38.5,HBCC,African,HBCC,6
+HBCC-910,Not Hispanic or Latino,Black or African-American,10,Female,53,HBCC,African,HBCC,9
+HBCC-1228,Not Hispanic or Latino,Black or African-American,50.5,Male,49.8,HBCC,African,HBCC,6
+HBCC-1357,Not Hispanic or Latino,Black or African-American,48,Female,38.1,HBCC,African,HBCC,8
+HBCC-909,Not Hispanic or Latino,Black or African-American,45.5,Female,57.9,HBCC,African,HBCC,9
+HBCC-2003,Not Hispanic or Latino,Black or African-American,11,Male,73.9,HBCC,African,HBCC,9
+HBCC-1908,Not Hispanic or Latino,Black or African-American,10.5,Male,23.6,HBCC,African,HBCC,9
+HBCC-2303,Not Hispanic or Latino,Black or African-American,30.5,Female,39.8,HBCC,African,HBCC,9
+HBCC-823,Not Hispanic or Latino,Black or African-American,10.5,Female,50,HBCC,African,HBCC,10
+HBCC-2064,Not Hispanic or Latino,Black or African-American,28,Male,40.3,HBCC,African,HBCC,9
+HBCC-926,Not Hispanic or Latino,Black or African-American,15.5,Male,31.8,HBCC,African,HBCC,9
+HBCC-2703,Not Hispanic or Latino,Black or African-American,60.5,Male,59.9,HBCC,African,HBCC,9
+HBCC-1385,Hispanic or Latino,Hispanic or Latino,22,Male,35.6,HBCC,White Hispanic Latino,HBCC,6
+HBCC-1691,Not Hispanic or Latino,Black or African-American,28.5,Female,46.6,HBCC,African,HBCC,10
+HBCC-1927,Not Hispanic or Latino,Black or African-American,15.5,Male,49.7,HBCC,African,HBCC,6
+HBCC-885,Not Hispanic or Latino,Black or African-American,21.5,Male,19.9,HBCC,African,HBCC,6
+HBCC-1227,Not Hispanic or Latino,Black or African-American,25,Female,26.8,HBCC,African,HBCC,6
+HBCC-1918,Not Hispanic or Latino,Black or African-American,31.5,Female,46.7,HBCC,African,HBCC,10
+HBCC-2305,Not Hispanic or Latino,Black or African-American,27,Female,54.9,HBCC,African,HBCC,6
+HBCC-1340,Not Hispanic or Latino,Black or African-American,42,Female,26.2,HBCC,African,HBCC,10
+HBCC-1221,Not Hispanic or Latino,Black or African-American,32,Female,41.2,HBCC,African,HBCC,6
+HBCC-946,Not Hispanic or Latino,Black or African-American,32.5,Male,54,HBCC,African,HBCC,6
+HBCC-2860,Not Hispanic or Latino,Black or African-American,40.5,Male,30.3,HBCC,African,HBCC,10
+HBCC-1883,Not Hispanic or Latino,Black or African-American,14.5,Male,45.2,HBCC,African,HBCC,10
+HBCC-1390,Not Hispanic or Latino,Black or African-American,8.17,Female,42.7,HBCC,African,HBCC,6
+HBCC-924,Not Hispanic or Latino,Black or African-American,40,Male,42.3,HBCC,African,HBCC,6
+HBCC-943,Not Hispanic or Latino,Black or African-American,40.5,Male,71.4,HBCC,African,HBCC,6
+HBCC-1431,Not Hispanic or Latino,Black or African-American,43.5,Male,51.7,HBCC,African,HBCC,6
+HBCC-1974,Not Hispanic or Latino,Black or African-American,21.5,Male,29.1,HBCC,African,HBCC,10
+HBCC-1905,Not Hispanic or Latino,Black or African-American,9,Male,46,HBCC,African,HBCC,10
+HBCC-913,Not Hispanic or Latino,Black or African-American,49.5,Male,35.9,HBCC,African,HBCC,8
+HBCC-928,Not Hispanic or Latino,Black or African-American,12.5,Male,24.6,HBCC,African,HBCC,9
+HBCC-1405,Not Hispanic or Latino,Black or African-American,33.5,Female,31.5,HBCC,African,HBCC,9
+HBCC-1898,Not Hispanic or Latino,Black or African-American,47,Male,34.8,HBCC,African,HBCC,9
+HBCC-1410,Not Hispanic or Latino,Black or African-American,29.5,Male,29.8,HBCC,African,HBCC,6
+HBCC-3081,Not Hispanic or Latino,Black or African-American,17,Male,40.5,HBCC,African,HBCC,6
+HBCC-859,Not Hispanic or Latino,Black or African-American,19.5,Male,52.2,HBCC,African,HBCC,10
+HBCC-1325,Not Hispanic or Latino,Black or African-American,25,Female,45.8,HBCC,African,HBCC,9
+HBCC-1134,Not Hispanic or Latino,Black or African-American,32,Female,36.5,HBCC,African,HBCC,6
+HBCC-2998,Not Hispanic or Latino,Black or African-American,24.5,Male,58.7,HBCC,African,HBCC,9
+HBCC-1525,Not Hispanic or Latino,Black or African-American,13,Female,46.1,HBCC,African,HBCC,6
+HBCC-1539,Not Hispanic or Latino,Black or African-American,53.5,Female,54.6,HBCC,African,HBCC,6
+HBCC-1142,Not Hispanic or Latino,Black or African-American,43,Male,33,HBCC,African,HBCC,9
+HBCC-1346,Not Hispanic or Latino,Black or African-American,69.88,Male,29.5,HBCC,African,HBCC,6
+HBCC-3095,Not Hispanic or Latino,Black or African-American,27.5,Female,51.9,HBCC,African,HBCC,10
+HBCC-894,Not Hispanic or Latino,Black or African-American,24,Female,58,HBCC,African,HBCC,6
+HBCC-1517,Not Hispanic or Latino,Black or African-American,62.5,Female,44.8,HBCC,African,HBCC,9
+HBCC-1563,Not Hispanic or Latino,Black or African-American,18,Female,21.3,HBCC,African,HBCC,6
+HBCC-1442,Not Hispanic or Latino,Black or African-American,24.5,Male,42,HBCC,African,HBCC,6
+HBCC-2927,Not Hispanic or Latino,Black or African-American,24,Female,58.1,HBCC,African,HBCC,7
+HBCC-852,Not Hispanic or Latino,Black or African-American,38,Male,22.1,HBCC,African,HBCC,9
+HBCC-3029,Hispanic or Latino,Hispanic or Latino,32,Male,59.9,HBCC,White Hispanic Latino,HBCC,9
+HBCC-2943,Not Hispanic or Latino,Black or African-American,57,Male,36.8,HBCC,African,HBCC,9
+HBCC-1494,Not Hispanic or Latino,Black or African-American,57.5,Female,65,HBCC,African,HBCC,10
+HBCC-1263,Not Hispanic or Latino,Black or African-American,45.5,Female,41,HBCC,African,HBCC,7
+HBCC-1150,Not Hispanic or Latino,Black or African-American,28.5,Female,65,HBCC,African,HBCC,7
+HBCC-2955,Not Hispanic or Latino,Black or African-American,37.5,Male,42.2,HBCC,African,HBCC,9
+HBCC-2781,Hispanic or Latino,Hispanic or Latino,9.5,Male,38.8,HBCC,White Hispanic Latino,HBCC,7
+HBCC-1314,Not Hispanic or Latino,Black or African-American,50.5,Female,53.4,HBCC,African,HBCC,7
+HBCC-2936,Not Hispanic or Latino,Black or African-American,30,Female,66.1,HBCC,African,HBCC,7
+HBCC-1133,Not Hispanic or Latino,Black or African-American,16.5,Male,23.2,HBCC,African,HBCC,7
+HBCC-1456,Hispanic or Latino,Hispanic or Latino,54.5,Female,56.1,HBCC,White Hispanic Latino,HBCC,7
+HBCC-1468,Not Hispanic or Latino,Black or African-American,51,Female,50,HBCC,African,HBCC,10
+HBCC-972,Not Hispanic or Latino,Black or African-American,66.5,Male,83.2,HBCC,African,HBCC,10
+HBCC-2756,Hispanic or Latino,Hispanic or Latino,10.5,Male,33.3,HBCC,White Hispanic Latino,HBCC,7
+HBCC-2420,Not Hispanic or Latino,Black or African-American,27.5,Female,33.8,HBCC,African,HBCC,6
+HBCC-1459,Not Hispanic or Latino,Black or African-American,40,Female,40.8,HBCC,African,HBCC,8
+HBCC-1179,Not Hispanic or Latino,Black or African-American,43,Female,45.4,HBCC,African,HBCC,7
+HBCC-1611,Not Hispanic or Latino,Black or African-American,46.5,Female,53.6,HBCC,African,HBCC,7
+HBCC-2790,Not Hispanic or Latino,Black or African-American,45.5,Male,27.3,HBCC,African,HBCC,7
+HBCC-2453,Not Hispanic or Latino,Black or African-American,43.5,Female,48.6,HBCC,African,HBCC,7
+HBCC-1522,Not Hispanic or Latino,Black or African-American,49.05,Female,64.9,HBCC,African,HBCC,8
+HBCC-1571,Not Hispanic or Latino,Black or African-American,34.5,Male,31.6,HBCC,African,HBCC,7
+HBCC-1185,Not Hispanic or Latino,Black or African-American,24,Female,54.5,HBCC,African,HBCC,7
+HBCC-1504,Not Hispanic or Latino,Black or African-American,53.5,Male,64.6,HBCC,African,HBCC,7
+HBCC-1473,Not Hispanic or Latino,Black or African-American,29,Male,44.5,HBCC,African,HBCC,7
+HBCC-2636,Not Hispanic or Latino,Black or African-American,38,Male,24.9,HBCC,African,HBCC,7
+HBCC-1722,Not Hispanic or Latino,Black or African-American,33.5,Male,48.6,HBCC,African,HBCC,7
+HBCC-1462,Not Hispanic or Latino,Black or African-American,31.5,Male,29.1,HBCC,African,HBCC,7
+HBCC-1187,Not Hispanic or Latino,Black or African-American,25,Female,21.5,HBCC,African,HBCC,7
+HBCC-1615,Not Hispanic or Latino,Black or African-American,25,Female,71.8,HBCC,African,HBCC,7
+HBCC-2267,Not Hispanic or Latino,Black or African-American,18,Male,49.4,HBCC,African,HBCC,10
+HBCC-1275,Not Hispanic or Latino,Black or African-American,13,Male,60.8,HBCC,African,HBCC,7
+HBCC-863,Not Hispanic or Latino,Black or African-American,24.5,Male,43.9,HBCC,African,HBCC,7
+HBCC-1135,Not Hispanic or Latino,Black or African-American,44,Male,60.4,HBCC,African,HBCC,10
+HBCC-1054,Not Hispanic or Latino,Black or African-American,28.5,Male,58.5,HBCC,African,HBCC,7
+HBCC-2076,Not Hispanic or Latino,Black or African-American,24,Male,56.5,HBCC,African,HBCC,7
+HBCC-1053,Not Hispanic or Latino,Black or African-American,25,Female,40.2,HBCC,African,HBCC,9
+HBCC-1604,Not Hispanic or Latino,Black or African-American,14,Male,27.2,HBCC,African,HBCC,7
+HBCC-1040,Not Hispanic or Latino,Black or African-American,14,Male,20.9,HBCC,African,HBCC,6
+HBCC-2074,Not Hispanic or Latino,Black or African-American,16,Male,44.8,HBCC,African,HBCC,7
+HBCC-1056,Not Hispanic or Latino,Black or African-American,37,Male,48.7,HBCC,African,HBCC,7
+HBCC-2263,Not Hispanic or Latino,Black or African-American,57,Female,40.3,HBCC,African,HBCC,10
+HBCC-939,Not Hispanic or Latino,Black or African-American,106,Male,53.6,HBCC,African,HBCC,7
+HBCC-1051,Not Hispanic or Latino,Black or African-American,19,Female,57.6,HBCC,African,HBCC,7
+HBCC-2053,Not Hispanic or Latino,Black or African-American,50.75,Male,65.6,HBCC,African,HBCC,7
+HBCC-1745,Not Hispanic or Latino,Black or African-American,21,Female,27.6,HBCC,African,HBCC,7
+HBCC-2569,Not Hispanic or Latino,Black or African-American,73,Male,65.9,HBCC,African,HBCC,7
+HBCC-2539,Not Hispanic or Latino,Black or African-American,27.5,Male,84.2,HBCC,African,HBCC,7
+HBCC-2429,Hispanic or Latino,Hispanic or Latino,35.5,Male,36.1,HBCC,White Hispanic Latino,HBCC,8
+HBCC-1171,Not Hispanic or Latino,Black or African-American,38,Male,46.2,HBCC,African,HBCC,10
+HBCC-1004,Not Hispanic or Latino,Black or African-American,28.5,Male,21,HBCC,African,HBCC,10
+HBCC-1556,Not Hispanic or Latino,Black or African-American,37.5,Female,30,HBCC,African,HBCC,8
+HBCC-1331,Hispanic or Latino,Hispanic or Latino,33.5,Male,20.2,HBCC,White Hispanic Latino,HBCC,8
+HBCC-2623,Not Hispanic or Latino,Black or African-American,27,Male,27.6,HBCC,African,HBCC,8
+HBCC-2575,Not Hispanic or Latino,Black or African-American,27,Male,59.7,HBCC,African,HBCC,8
+HBCC-2628,Not Hispanic or Latino,Black or African-American,35,Male,26.1,HBCC,African,HBCC,6
+HBCC-2543,Not Hispanic or Latino,Black or African-American,14.5,Male,50.5,HBCC,African,HBCC,8
+HBCC-1306,Not Hispanic or Latino,Black or African-American,15,Male,21.5,HBCC,African,HBCC,8
+HBCC-1560,Hispanic or Latino,Hispanic or Latino,30,Male,48.5,HBCC,White Hispanic Latino,HBCC,8
+HBCC-2513,Not Hispanic or Latino,Black or African-American,37,Male,54.5,HBCC,African,HBCC,8
+HBCC-1058,Hispanic or Latino,Hispanic or Latino,21,Male,19.4,HBCC,White Hispanic Latino,HBCC,8
+HBCC-1281,Not Hispanic or Latino,Black or African-American,14.5,Male,24.9,HBCC,African,HBCC,8
+HBCC-991,Not Hispanic or Latino,Black or African-American,55.5,Male,35.3,HBCC,African,HBCC,8
+HBCC-1644,Not Hispanic or Latino,Black or African-American,21.5,Male,45.3,HBCC,African,HBCC,8
+HBCC-2552,Not Hispanic or Latino,Black or African-American,51,Male,46.9,HBCC,African,HBCC,8
+HBCC-2377,Not Hispanic or Latino,Black or African-American,44.2,Female,56.6,HBCC,African,HBCC,8
+HBCC-2287,Not Hispanic or Latino,Black or African-American,50.5,Female,50.9,HBCC,African,HBCC,8
+HBCC-1069,Not Hispanic or Latino,Black or African-American,37,Female,59.6,HBCC,African,HBCC,8
+HBCC-2587,Not Hispanic or Latino,Black or African-American,25.5,Male,50.6,HBCC,African,HBCC,8
+HBCC-1297,Not Hispanic or Latino,Black or African-American,37,Male,62.8,HBCC,African,HBCC,8
+HBCC-993,Not Hispanic or Latino,Black or African-American,32.5,Female,30.5,HBCC,African,HBCC,8
+HBCC-1020,Not Hispanic or Latino,Black or African-American,27.5,Male,44.8,HBCC,African,HBCC,9
+HBCC-1007,Not Hispanic or Latino,Black or African-American,25,Male,57.1,HBCC,African,HBCC,8
+HBCC-1156,Not Hispanic or Latino,Black or African-American,25.5,Female,53.9,HBCC,African,HBCC,8
+HBCC-1424,Not Hispanic or Latino,Black or African-American,58,Male,51.6,HBCC,African,HBCC,10
+HBCC-1017,Not Hispanic or Latino,Black or African-American,23.5,Female,48.5,HBCC,African,HBCC,8
+HBCC-1305,Not Hispanic or Latino,Black or African-American,50,Male,58.4,HBCC,African,HBCC,8
+HBCC-1003,Not Hispanic or Latino,Black or African-American,26,Female,52.6,HBCC,African,HBCC,10
+HBCC-1285,Not Hispanic or Latino,Black or African-American,53,Male,58.2,HBCC,African,HBCC,8
+HBCC-1276,Not Hispanic or Latino,Black or African-American,43.5,Male,24.3,HBCC,African,HBCC,8
+HBCC-1039,Not Hispanic or Latino,Black or African-American,24,Female,51.5,HBCC,African,HBCC,8
+HBCC-831,Not Hispanic or Latino,Black or African-American,44,Male,85.2,HBCC,African,HBCC,8
+HBCC-977,Not Hispanic or Latino,Black or African-American,31.5,Male,56.3,HBCC,African,HBCC,8
+HBCC-2746,Not Hispanic or Latino,Black or African-American,47.5,Male,34,HBCC,African,HBCC,10
+HBCC-1348,Not Hispanic or Latino,Black or African-American,25.5,Female,42.9,HBCC,African,HBCC,9
+HBCC-1122,Not Hispanic or Latino,Black or African-American,23,Male,48.6,HBCC,African,HBCC,9
+HBCC-2046,Not Hispanic or Latino,Black or African-American,34.5,Male,44.7,HBCC,African,HBCC,9
+HBCC-959,Not Hispanic or Latino,Black or African-American,54.5,Male,22.6,HBCC,African,HBCC,9
+HBCC-973,Not Hispanic or Latino,Black or African-American,14.5,Male,41.6,HBCC,African,HBCC,9
+HBCC-1137,Not Hispanic or Latino,Black or African-American,58,Male,68.6,HBCC,African,HBCC,9
+HBCC-1164,Not Hispanic or Latino,Black or African-American,16,Female,48.1,HBCC,African,HBCC,9
+HBCC-1167,Not Hispanic or Latino,Black or African-American,26.5,Male,45.9,HBCC,African,HBCC,9
+HBCC-914,Not Hispanic or Latino,Black or African-American,19,Female,19.7,HBCC,African,HBCC,9
+HBCC-1099,Not Hispanic or Latino,Black or African-American,34,Female,67.8,HBCC,African,HBCC,9
+SH-03-15,US Caucasian,White,3.25,Male,80,SH,European,NABEC,5
+SH-04-05,US Caucasian,White,2.25,Female,82,SH,European,NABEC,5
+SH-04-08,US Caucasian,White,2.25,Male,73,SH,European,NABEC,5
+SH-04-19,US Caucasian,White,3,Male,84,SH,European,NABEC,5
+SH-04-21,US Caucasian,White,3,Male,89,SH,European,NABEC,1
+SH-05-10,US Caucasian,White,1.5,Male,91,SH,European,NABEC,5
+SH-06-05,US Caucasian,White,4.5,Female,88,SH,European,NABEC,5
+SH-06-25,US Caucasian,White,2.5,Female,82,SH,European,NABEC,5
+SH-06-66,US Caucasian,White,2.75,Male,78,SH,European,NABEC,5
+SH-07-28,US Caucasian,White,4.75,Male,86,SH,European,NABEC,5
+SH-07-37,US Caucasian,White,5.5,Male,89,SH,European,NABEC,5
+SH-07-46,US Caucasian,White,5,Female,91,SH,European,NABEC,5
+SH-07-63,US Caucasian,White,2.5,Female,87,SH,European,NABEC,5
+SH-08-04,US Caucasian,White,2.75,Female,94,SH,European,NABEC,5
+SH-08-23,US Caucasian,White,12.25,Male,85,SH,European,NABEC,5
+SH-92-05,US Caucasian,White,2,Male,82,SH,European,NABEC,5
+SH-92-14,US Caucasian,White,3.75,Female,95,SH,European,NABEC,5
+SH-94-35,US Caucasian,White,1.25,Female,78,SH,European,NABEC,1
+SH-95-02,US Caucasian,White,3,Male,70,SH,European,NABEC,5
+SH-95-34,US Caucasian,White,1.66,Male,82,SH,European,NABEC,5
+SH-96-08,US Caucasian,White,1.66,Male,78,SH,European,NABEC,1
+SH-96-30,US Caucasian,White,2.16,Male,90,SH,European,NABEC,1
+SH-96-32,US Caucasian,White,1,Female,85,SH,European,NABEC,1
+SH-96-35,US Caucasian,White,2.66,Male,84,SH,European,NABEC,1
+SH-96-39,US Caucasian,White,2.5,Female,73,SH,European,NABEC,1
+SH-98-23,US Caucasian,White,2,Male,68,SH,European,NABEC,5
+SH-99-14,US Caucasian,White,2.5,Male,86,SH,European,NABEC,1
+SH-99-29,US Caucasian,White,3.75,Male,81,SH,European,NABEC,1
+SH-99-44,US Caucasian,White,2.16,Male,69,SH,European,NABEC,1
+KEN-845,US Caucasian,White,3,Female,65,UKY,European,NABEC,2
+KEN-1066,US Caucasian,White,2,Male,81,UKY,European,NABEC,5
+KEN-1069,US Caucasian,White,2.42,Male,87,UKY,European,NABEC,1
+KEN-1070,US Caucasian,White,2.1,Male,82,UKY,European,NABEC,1
+KEN-1092,US Caucasian,White,1.75,Female,86,UKY,European,NABEC,1
+KEN-1095,US Caucasian,White,4,Female,90,UKY,European,NABEC,1
+KEN-1106,US Caucasian,White,1.75,Male,79,UKY,European,NABEC,1
+KEN-1127,US Caucasian,White,1.75,Female,91,UKY,European,NABEC,1
+KEN-1131,US Caucasian,White,2.25,Female,80,UKY,European,NABEC,1
+KEN-1132,US Caucasian,White,3.5,Female,95,UKY,European,NABEC,1
+KEN-1142,US Caucasian,White,3.25,Male,92,UKY,European,NABEC,1
+KEN-1153,US Caucasian,White,3.5,Female,75,UKY,European,NABEC,1
+KEN-1156,US Caucasian,White,2.25,Female,100,UKY,European,NABEC,1
+KEN-1159,US Caucasian,White,3.5,Female,86,UKY,European,NABEC,1
+KEN-1163,US Caucasian,White,3,Female,84,UKY,European,NABEC,1
+KEN-1177,US Caucasian,White,3.25,Female,93,UKY,European,NABEC,1
+KEN-1184,US Caucasian,White,3,Female,92,UKY,European,NABEC,1
+KEN-1206,US Caucasian,White,2.25,Female,94,UKY,European,NABEC,2
+KEN-1221,US Caucasian,White,2.83,Male,81,UKY,European,NABEC,2
+KEN-1224,US Caucasian,White,2.25,Female,93,UKY,European,NABEC,5
+KEN-1229,US Caucasian,White,1.33,Female,92,UKY,European,NABEC,2
+KEN-1245,US Caucasian,White,2.17,Male,88,UKY,European,NABEC,2
+KEN-5015,US Caucasian,White,2.9,Male,84,UKY,European,NABEC,2
+KEN-5034,US Caucasian,White,11.25,Female,95,UKY,European,NABEC,2
+KEN-5062,US Caucasian,White,2,Male,92,UKY,European,NABEC,2
+KEN-5091,US Caucasian,White,12,Male,81,UKY,European,NABEC,2
+KEN-5163,US Caucasian,White,7.25,Male,96,UKY,European,NABEC,2
+UMARY-26,US Caucasian,White,16,Female,18,UMARY,European,NABEC,5
+UMARY-55,US Caucasian,White,17,Female,19,UMARY,European,NABEC,4
+UMARY-164,US Caucasian,White,16,Male,17,UMARY,European,NABEC,3
+UMARY-165,US Caucasian,White,20,Male,15,UMARY,European,NABEC,3
+UMARY-177,US Caucasian,White,19,Male,16,UMARY,European,NABEC,3
+UMARY-240,US Caucasian,White,20,Female,36,UMARY,European,NABEC,3
+UMARY-251,US Caucasian,White,12,Male,52,UMARY,European,NABEC,3
+UMARY-260,US Caucasian,White,36,Male,45,UMARY,European,NABEC,3
+UMARY-288,US Caucasian,White,18,Male,42,UMARY,European,NABEC,3
+UMARY-455,US Caucasian,White,13,Male,19,UMARY,European,NABEC,4
+UMARY-544,US Caucasian,White,11,Male,38,UMARY,European,NABEC,4
+UMARY-602,US Caucasian,White,15,Male,27,UMARY,European,NABEC,4
+UMARY-604,US Caucasian,White,15,Male,43,UMARY,European,NABEC,5
+UMARY-634,US Caucasian,White,6,Male,46,UMARY,European,NABEC,4
+UMARY-650,US Caucasian,White,16,Female,25,UMARY,European,NABEC,4
+UMARY-671,US Caucasian,White,25,Male,17,UMARY,European,NABEC,5
+UMARY-794,US Caucasian,White,21,Female,51,UMARY,European,NABEC,5
+UMARY-813,US Caucasian,White,14,Female,30,UMARY,European,NABEC,5
+UMARY-818,US Caucasian,White,10,Male,27,UMARY,European,NABEC,5
+UMARY-819,US Caucasian,White,28,Male,18,UMARY,European,NABEC,5
+UMARY-871,US Caucasian,White,19,Male,42,UMARY,European,NABEC,5
+UMARY-879,US Caucasian,White,13,Male,21,UMARY,European,NABEC,5
+UMARY-914,US Caucasian,White,18,Male,20,UMARY,European,NABEC,5
+UMARY-933,US Caucasian,White,12,Male,20,UMARY,European,NABEC,5
+UMARY-1013,US Caucasian,White,27,Male,18,UMARY,European,NABEC,1
+UMARY-1027,US Caucasian,White,9,Male,22,UMARY,European,NABEC,1
+UMARY-1028,US Caucasian,White,14,Male,39,UMARY,European,NABEC,1
+UMARY-1064,US Caucasian,White,19,Female,40,UMARY,European,NABEC,5
+UMARY-1076,US Caucasian,White,19,Male,17,UMARY,European,NABEC,1
+UMARY-1079,US Caucasian,White,16,Female,19,UMARY,European,NABEC,1
+UMARY-1101,US Caucasian,White,7,Female,19,UMARY,European,NABEC,1
+UMARY-1113,US Caucasian,White,17,Male,56,UMARY,European,NABEC,1
+UMARY-1114,US Caucasian,White,15,Male,31,UMARY,European,NABEC,1
+UMARY-1133,US Caucasian,White,9,Male,38,UMARY,European,NABEC,5
+UMARY-1134,US Caucasian,White,15,Male,41,UMARY,European,NABEC,5
+UMARY-1135,US Caucasian,White,18,Male,42,UMARY,European,NABEC,1
+UMARY-1136,US Caucasian,White,19,Female,33,UMARY,European,NABEC,5
+UMARY-1158,US Caucasian,White,15,Male,16,UMARY,European,NABEC,2
+UMARY-1206,US Caucasian,White,16,Male,57,UMARY,European,NABEC,2
+UMARY-1259,US Caucasian,White,8,Male,24,UMARY,European,NABEC,1
+UMARY-1266,US Caucasian,White,15,Male,42,UMARY,European,NABEC,5
+UMARY-1277,US Caucasian,White,20,Male,35,UMARY,European,NABEC,1
+UMARY-1279,US Caucasian,White,19,Female,17,UMARY,European,NABEC,1
+UMARY-1322,US Caucasian,White,25,Male,16,UMARY,European,NABEC,1
+UMARY-1323,US Caucasian,White,25,Male,16,UMARY,European,NABEC,2
+UMARY-1326,US Caucasian,White,12,Male,37,UMARY,European,NABEC,2
+UMARY-1347,US Caucasian,White,16,Female,19,UMARY,European,NABEC,2
+UMARY-1362,US Caucasian,White,19,Male,48,UMARY,European,NABEC,2
+UMARY-1363,US Caucasian,White,14,Female,40,UMARY,European,NABEC,2
+UMARY-1378,US Caucasian,White,30,Male,55,UMARY,European,NABEC,2
+UMARY-1379,US Caucasian,White,15,Female,53,UMARY,European,NABEC,2
+UMARY-1406,US Caucasian,White,22,Female,38,UMARY,European,NABEC,2
+UMARY-1410,US Caucasian,White,16,Male,45,UMARY,European,NABEC,2
+UMARY-1442,US Caucasian,White,7,Male,22,UMARY,European,NABEC,2
+UMARY-1454,US Caucasian,White,24,Female,47,UMARY,European,NABEC,2
+UMARY-1455,US Caucasian,White,7,Female,25,UMARY,European,NABEC,2
+UMARY-1461,US Caucasian,White,13,Male,31,UMARY,European,NABEC,2
+UMARY-1464,US Caucasian,White,19,Male,42,UMARY,European,NABEC,2
+UMARY-1465,US Caucasian,White,4,Male,17,UMARY,European,NABEC,2
+UMARY-1475,US Caucasian,White,3,Male,20,UMARY,European,NABEC,2
+UMARY-1486,US Caucasian,White,10,Female,22,UMARY,European,NABEC,2
+UMARY-1496,US Caucasian,White,19,Female,53,UMARY,European,NABEC,2
+UMARY-1498,US Caucasian,White,20,Male,48,UMARY,European,NABEC,5
+UMARY-1535,US Caucasian,White,16,Male,34,UMARY,European,NABEC,2
+UMARY-1539,US Caucasian,White,23,Female,33,UMARY,European,NABEC,5
+UMARY-1540,US Caucasian,White,7,Male,28,UMARY,European,NABEC,2
+UMARY-1541,US Caucasian,White,19,Female,20,UMARY,European,NABEC,2
+UMARY-1543,US Caucasian,White,22,Male,17,UMARY,European,NABEC,2
+UMARY-1544,US Caucasian,White,12,Male,32,UMARY,European,NABEC,2
+UMARY-1545,US Caucasian,White,20,Male,45,UMARY,European,NABEC,5
+UMARY-1568,US Caucasian,White,22,Female,51,UMARY,European,NABEC,2
+UMARY-1570,US Caucasian,White,14,Male,48,UMARY,European,NABEC,2
+UMARY-1571,US Caucasian,White,8,Female,18,UMARY,European,NABEC,2
+UMARY-1584,US Caucasian,White,15,Female,18,UMARY,European,NABEC,2
+UMARY-1607,US Caucasian,White,24,Female,17,UMARY,European,NABEC,3
+UMARY-1609,US Caucasian,White,24,Female,33,UMARY,European,NABEC,3
+UMARY-1648,US Caucasian,White,23,Female,38,UMARY,European,NABEC,3
+UMARY-1668,US Caucasian,White,24,Male,19,UMARY,European,NABEC,3
+UMARY-1672,US Caucasian,White,28,Male,19,UMARY,European,NABEC,3
+UMARY-1675,US Caucasian,White,25,Male,32,UMARY,European,NABEC,3
+UMARY-1710,US Caucasian,White,12,Female,26,UMARY,European,NABEC,3
+UMARY-1713,US Caucasian,White,8,Male,23,UMARY,European,NABEC,3
+UMARY-1743,US Caucasian,White,23,Female,44,UMARY,European,NABEC,3
+UMARY-1789,US Caucasian,White,22,Female,50,UMARY,European,NABEC,3
+UMARY-1792,US Caucasian,White,11,Female,25,UMARY,European,NABEC,3
+UMARY-1794,US Caucasian,White,17,Male,21,UMARY,European,NABEC,3
+UMARY-1795,US Caucasian,White,23,Female,49,UMARY,European,NABEC,5
+UMARY-1796,US Caucasian,White,16,Male,16,UMARY,European,NABEC,3
+UMARY-1797,US Caucasian,White,18,Male,43,UMARY,European,NABEC,3
+UMARY-1818,US Caucasian,White,3,Male,76,UMARY,European,NABEC,3
+UMARY-1823,US Caucasian,White,18,Male,15,UMARY,European,NABEC,3
+UMARY-1825,US Caucasian,White,20,Male,48,UMARY,European,NABEC,3
+UMARY-1827,US Caucasian,White,9,Female,39,UMARY,European,NABEC,3
+UMARY-1831,US Caucasian,White,17,Male,44,UMARY,European,NABEC,3
+UMARY-1841,US Caucasian,White,14,Male,19,UMARY,European,NABEC,3
+UMARY-1843,US Caucasian,White,9,Female,15,UMARY,European,NABEC,3
+UMARY-1845,US Caucasian,White,29,Female,18,UMARY,European,NABEC,5
+UMARY-1847,US Caucasian,White,16,Male,57,UMARY,European,NABEC,3
+UMARY-1849,US Caucasian,White,21,Male,48,UMARY,European,NABEC,3
+UMARY-1859,US Caucasian,White,20,Male,30,UMARY,European,NABEC,3
+UMARY-1861,US Caucasian,White,19,Male,54,UMARY,European,NABEC,3
+UMARY-1862,US Caucasian,White,6,Male,20,UMARY,European,NABEC,3
+UMARY-1865,US Caucasian,White,16,Male,55,UMARY,European,NABEC,3
+UMARY-1866,US Caucasian,White,19,Male,32,UMARY,European,NABEC,5
+UMARY-1902,US Caucasian,White,21,Male,43,UMARY,European,NABEC,3
+UMARY-1909,US Caucasian,White,20,Male,40,UMARY,European,NABEC,3
+UMARY-1935,US Caucasian,White,16,Male,43,UMARY,European,NABEC,3
+UMARY-4228,US Caucasian,White,16,Female,44,UMARY,European,NABEC,3
+UMARY-4263,US Caucasian,White,6,Male,61,UMARY,European,NABEC,3
+UMARY-4540,US Caucasian,White,23,Male,25,UMARY,European,NABEC,3
+UMARY-4542,US Caucasian,White,8,Male,22,UMARY,European,NABEC,4
+UMARY-4549,US Caucasian,White,17,Male,58,UMARY,European,NABEC,5
+UMARY-4592,US Caucasian,White,14,Male,38,UMARY,European,NABEC,4
+UMARY-4636,US Caucasian,White,19,Female,43,UMARY,European,NABEC,4
+UMARY-4638,US Caucasian,White,5,Female,15,UMARY,European,NABEC,4
+UMARY-4640,US Caucasian,White,5,Female,47,UMARY,European,NABEC,4
+UMARY-4669,US Caucasian,White,16,Male,16,UMARY,European,NABEC,4
+UMARY-4725,US Caucasian,White,17,Female,32,UMARY,European,NABEC,4
+UMARY-4726,US Caucasian,White,6,Male,28,UMARY,European,NABEC,4
+UMARY-4727,US Caucasian,White,5,Male,20,UMARY,European,NABEC,4
+UMARY-4728,US Caucasian,White,23,Male,17,UMARY,European,NABEC,4
+UMARY-4729,US Caucasian,White,10,Male,24,UMARY,European,NABEC,4
+UMARY-4735,US Caucasian,White,21,Male,73,UMARY,European,NABEC,4
+UMARY-4782,US Caucasian,White,17,Male,18,UMARY,European,NABEC,4
+UMARY-4786,US Caucasian,White,11,Male,22,UMARY,European,NABEC,4
+UMARY-4789,US Caucasian,White,19,Female,72,UMARY,European,NABEC,4
+UMARY-4842,US Caucasian,White,12,Male,47,UMARY,European,NABEC,4
+UMARY-4903,US Caucasian,White,5,Female,31,UMARY,European,NABEC,4
+UMARY-4906,US Caucasian,White,13,Female,16,UMARY,European,NABEC,4
+UMARY-4916,US Caucasian,White,5,Male,19,UMARY,European,NABEC,4
+UMARY-4924,US Caucasian,White,9,Male,48,UMARY,European,NABEC,4
+UMARY-5024,US Caucasian,White,10,Male,56,UMARY,European,NABEC,4
+UMARY-5028,US Caucasian,White,18,Male,67,UMARY,European,NABEC,4
+UMARY-5077,US Caucasian,White,13,Female,16,UMARY,European,NABEC,5
+UMARY-5078,US Caucasian,White,23,Male,48,UMARY,European,NABEC,4
+UMARY-5079,US Caucasian,White,16,Male,33,UMARY,European,NABEC,4
+UMARY-5086,US Caucasian,White,20,Female,47,UMARY,European,NABEC,4
+UMARY-5087,US Caucasian,White,4,Male,44,UMARY,European,NABEC,4
+UMARY-5088,US Caucasian,White,23,Male,66,UMARY,European,NABEC,4
+UMARY-5114,US Caucasian,White,9,Male,37,UMARY,European,NABEC,4
+UMARY-5116,US Caucasian,White,14,Male,48,UMARY,European,NABEC,4
+UMARY-5117,US Caucasian,White,5,Male,50,UMARY,European,NABEC,4
+UMARY-5120,US Caucasian,White,7,Female,50,UMARY,European,NABEC,4
+UMARY-5123,US Caucasian,White,24,Male,61,UMARY,European,NABEC,4
+UMARY-5171,US Caucasian,White,5,Male,79,UMARY,European,NABEC,4
+UMARY-5179,US Caucasian,White,22,Male,52,UMARY,European,NABEC,4

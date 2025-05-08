@@ -1,13 +1,10 @@
 args = [
-    "--mode","rna",
-    "--celltype","Astro",
-    "--covariates", "PC1","PC2","PC3","PC4","PC5","Sex","Age",
-    "--modality-covariates", "PC1","PC2","PC3","PC4","PC5",
-    "--cohort", "NABEC",
-    "--qtlmethod", "nominal",
-    "--interaction", "None",
-    "--outdir", "QTL-output",
-    "--window", '1000000',
-    "--pseudobulkmethod","sum",
-    "--chr","chr1"
+    '--traw','genotypes/HBCC_autosomes.traw',
+    '--counts','/data/CARD_singlecell/PFC_atlas/data/celltypes/Oligo/pseudobulk_rna.csv',
+    '--counts-index','SampleID',
+    '--outdir', 'QTL-test/HBCC-Oligo-ATAC',
+    '--window', '1000000',
+    '--covariates', 'genotypes/HBCC_tqtl_covariates.csv',
+    '--covariates-index', 'SampleID',
+    '--mode', 'rna'
 ]

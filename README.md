@@ -64,6 +64,19 @@ Rscript scripts/plot-crosschecks.R
 
 
 # QTL Analysis
+
+QTL analysis, per submitted run, will included the intersection of
+- samples with genotypes (i.e. in `traw` file)
+- samples in provided covariates file
+- samples with counts (i.e. in pseudobulk file)
+
+QTL analysis, per submitted run, will includes SNPs in the submitted `traw` file.
+
+1. Prepare `${COHORT}-covariates.txt` files
+2. Prepare `${COHORT}_${CHR}.traw.gz` files
+
+
+
 Generate table of samples along with batch and `bam` location
 ```bash
 module load R/4.3 && \
@@ -122,6 +135,13 @@ by running [`remove-hbcc-outliers.sh`](scripts/remove-hbcc-outliers.sh) to gener
 | HBCC_2756 | 0.3283 |
 | HBCC_2781 | 0.2680 |
 
+## Prepare RNA features file
+```bash
+gtf='/fdb/cellranger-arc/refdata-cellranger-arc-GRCh38-2024-A/genes/genes.gtf.gz'
+echo -e 'chr\tstart\tend\tgene_name' > data/GRCh38-2024-A-rna-features.txt
+zcat $gtf | awk '$3 == "gene" {print}' |  sed 's/gene_id.*gene_name "//g' | sed 's/"; .*$//g' | cut -f 1,4,5,9 >> data/GRCh38-2024-A-rna-features.txt
+Rscript make-unique.R
+```
 
 ## Prepare final tensorQTL covariates files
 See [`prep-covariates.R`](scripts/prep-covariates.R). The script generates a data frame for subsetting with particular cell type QTL runs.
