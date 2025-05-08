@@ -158,11 +158,6 @@ module load R/4.3 && \
 Rscript scripts/prep-QTL-bedfiles.R
 ```
 
-## Manually add feature blacklists
-The file `data/array-params.tsv` can include four columns. By default it will be generated with the
-first three. The fourth column specifying a feature blacklist can be added manually. I used `awk` 
-to add `data/TSS-blacklist.bed` for the ATAC runs that used the blacklist.
-
 ```bash
 awk '{OFS="\t"; if ($0~/atac/) {print $1,$2,$3,"data/TSS-blacklist.bed"} else {print $0,""}}'  data/array-params.tsv \
 > .tmpparams && \
@@ -176,6 +171,8 @@ mv .tmpparams data/array-params.tsv
 | 2 | Mode of data, . `{rna, atac}` |
 | 3 | Cohort, `{HBCC,NABEC}` |
 | 4 | Blacklist `bed` file with (at minimum) headers `{chr,start,stop}` |
+
+
 
 ## Run TensorQTL
 
