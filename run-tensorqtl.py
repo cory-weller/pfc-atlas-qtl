@@ -93,6 +93,10 @@ parser.add_argument('--window',
                     type=int,
                     help='')
 
+parser.add_argument('--skiptqtl', 
+                    default=False,
+                    action='store_true',
+                    help='')
 
 
 # Require --covariates-file
@@ -279,9 +283,9 @@ if args.mode == 'RNA':
     counts_df.reset_index(inplace=True)
     counts_df.rename(columns={'index':'phenotype_id'}, inplace=True)
 elif args.mode == 'ATAC':
-    atacFeatures = counts_df.index.tolist()
-    counts_df['chr'] = [x.split(':')[0] for x in atacFeatures]
+    counts_df['chr'] = [x.split(':')[0] for x in counts_df.index.tolist()]
     counts_df = counts_df[counts_df['chr'].isin(chrs_with_genotypes)]
+    atacFeatures = counts_df.index.tolist()
     peakPositions = [x.split(':')[1].split('-') for x in atacFeatures]
     counts_df['start'] = [round(statistics.mean([int(x) for x in y])) for y in peakPositions]
     counts_df['end'] = [x+1 for x in list(counts_df['start'])]
@@ -289,7 +293,6 @@ elif args.mode == 'ATAC':
     counts_df.reset_index(inplace=True)
     counts_df.drop('index', axis=1, inplace=True)
     counts_df.rename(columns={'#chr':'chr'}, inplace=True)
-    
 
 
 # Reorganize columns
@@ -352,6 +355,39 @@ genotype_df_intersect = genotypes_df[intersect]
 counts_df_intersect = counts_df[intersect]
 covariates_df_intersect = covariates_df[covariates_df.index.isin(intersect)]
 
+# Filter genotypes to 5% MAF
+genotypes_df['altsum']=genotypes_df.sum(axis=1)
+
+allele_min = 0.05*2*len(intersect)
+allele_max = 0.95*2*len(intersect)
+genotypes_df = genotypes_df[genotypes_df.altsum > allele_min]
+genotypes_df = genotypes_df[genotypes_df.altsum < allele_max]
+genotypes_df.drop('altsum', axis=1, inplace=True)
+
+
+variant_df = variant_df.loc[genotypes_df.index.tolist()]
+
+
+# Ensure output directory exists
+os.makedirs(args.outdir, exist_ok=True) 
+
+
+with open(f'{args.outdir}/model_samples.txt', 'w') as outfile:
+    outfile.write('\n'.join(intersect)+'\n')
+
+
+with open(f'{args.outdir}/model_features.txt', 'w') as outfile:
+    outfile.write('\n'.join(counts_df.index.tolist())+'\n')
+
+
+with open(f'{args.outdir}/model_variants.txt', 'w') as outfile:
+    outfile.write('\n'.join(genotypes_df.index.tolist())+'\n')
+
+
+with open(f'{args.outdir}/model_summary.txt', 'w') as outfile:
+    outfile.write(f'Samples: {len(intersect)}\n')
+    outfile.write(f'Features: {len(counts_df.index.tolist())}\n')
+    outfile.write(f'Variants: {len(genotypes_df.index.tolist())}\n')
 
 
 # # Load modality covariates
@@ -406,14 +442,14 @@ if False:
     variant_df['chrom'] = [f'chr{x}' for x in list(variant_df['chrom'])]
 
 
-# Ensure output directory exists
-os.makedirs(args.outdir, exist_ok=True) 
 
 
 # Subset chromosome specified by --chr
 # counts_df_intersect = counts_df_intersect.loc[pos_df['chr'] == args.chr]
 # pos_df = pos_df.loc[pos_df['chr'] == args.chr]
 
+if args.skiptqtl:
+    sys.exit(0)
 
 # Permutations NOT RELLY YET IMPLEMENTED
 if False:

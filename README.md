@@ -150,19 +150,6 @@ module load R/4.3 && \
 Rscript scripts/prep-covariates.R
 ```
 
-## Format expression counts as BED format
-See [`prep-QTL-bedfiles.R`](scripts/prep-QTL-bedfiles.R). Generates a file `{mode}-{cohort}-{celltype}-counts.bed` within the
-directory `QTL-pseudobulk-counts`
-```bash
-module load R/4.3 && \
-Rscript scripts/prep-QTL-bedfiles.R
-```
-
-```bash
-awk '{OFS="\t"; if ($0~/atac/) {print $1,$2,$3,"data/TSS-blacklist.bed"} else {print $0,""}}'  data/array-params.tsv \
-> .tmpparams && \
-mv .tmpparams data/array-params.tsv
-```
 
 
 | Column    | Value  |
@@ -183,19 +170,10 @@ The script must be submitted as a job array. Each job corresponds to a row from 
 Briefly, the script does the following:
 1. Imports the `N`th row (of job array, using `$SLURM_ARRAY_TASK_ID`) from `data/array-params.tsv`
 2. Creates and uses a temporary `lscratch` working directory
-3. Executes [`intersect-files.R`](scripts/intersect-files.R) to generate run-specific subset of pseudobulk counts, covariates, and interaction terms
-4. Executes [`subset-plink.sh`](scripts/subset-plink.sh) to generate run-specific subset of genotypes
-5. Executes `tensorqtl` job using singularity container
-6. Copies output from `lscratch` to `$BATCHNAME` within this project directory
+3. Executes `tensorqtl` job using singularity container
+4. Copies output from `lscratch` to `$BATCHNAME` within this project directory
 
 
-```bash
-sbatch --array=1-28%4 scripts/run-tensorQTL-nominal.sh cpm-log-sum-nominal-oct28
-sbatch --array=1-28%4 scripts/run-tensorQTL-interaction.sh cpm-log-sum-interaction-oct28
-
-sbatch --array=1-28%4 scripts/run-tensorQTL-nominal.sh cpm-log-nominal-oct29
-sbatch --array=1-28%4 scripts/run-tensorQTL-interaction.sh cpm-log-interaction-oct29
-```
 
 # Analyze QTL results
 Retrieved list of rsIDs with [`get-rsids.sh`](scripts/get-rsids.sh)
@@ -225,13 +203,12 @@ Get list of variants `variant-ids.txt` associated with ATAC or RNA data with `sc
 ```bash
 
 # Set up file with all combinations of parameters
-parallel -j 1 echo  {1} {2} {3} {4} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC ::: $(seq 1 22) > data/array-params.txt
+parallel -j 1 echo  {1} {2} {3} {4} ::: Astro ExN InN MG Oligo OPC VC  ::: rna atac ::: HBCC NABEC ::: $(seq 1 22) > array-params.txt
 
 
-# Run jobs, 50 at a time
-sbatch --array=1-616%50 ./submit-tqtl.sh
 
 # Parse parquet files
 scripts/parse-parquet-files.sh
 ```
+
 

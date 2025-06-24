@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH --mem 24g
+#SBATCH --mem 240G
 #SBATCH --cpus-per-task 2
 #SBATCH --time=3:59:00
 #SBATCH --partition quick,norm
@@ -20,15 +20,27 @@ cohort=$(sed -n ${N}p ${paramsfile} | awk '{print $3}')
 
 echo $celltype $mode $cohort
 
+if [[ ${mode} == 'rna' ]]; then
+    countsFile="/data/CARD_singlecell/PFC_atlas/data/celltypes/${celltype}/pseudobulk_rna.csv"
+    countsIndex='SampleID'
+elif [[ ${mode} == 'atac' ]]; then
+    countsFile="/data/CARD_singlecell/PFC_atlas/data/celltypes/${celltype}/pseudobulk_consensus_atac.csv"
+    countsIndex='sample_id'
+
+fi
+
+# Run 
 python-tqtl /data/CARD_singlecell/users/wellerca/pfc-atlas-qtl/run-tensorqtl.py \
     --traw genotypes/${cohort}_autosomes.traw \
-    --counts /data/CARD_singlecell/PFC_atlas/data/celltypes/${celltype}/pseudobulk_rna.csv \
-    --counts-index SampleID \
+    --counts ${countsFile} \
+    --counts-index ${countsIndex} \
     --outdir QTL/${cohort}-${celltype}-${mode} \
     --window ${windowsize} \
     --covariates genotypes/${cohort}_tqtl_covariates.csv \
     --covariates-index SampleID \
-    --mode ${mode}
+    --mode ${mode} \
+    --skiptqtl
+
 
 # HBCC RNA
 # sbatch --array=1-7 submit-tqtl.sh
