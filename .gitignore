@@ -20,3 +20,8 @@ slurm*.out
 *.idx
 .python_history
 .Rhistory
+QTL/*.csv
+QTL/*/*.csv
+QTL/*/*.parquet
+QTL/*/*.txt
+QTL/*/*.csv.sort
